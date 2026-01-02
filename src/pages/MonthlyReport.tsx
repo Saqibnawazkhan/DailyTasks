@@ -106,7 +106,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mb-3">
             <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -115,7 +115,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
           <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Tasks</p>
           <p className="text-3xl font-bold text-gray-900 mt-1">{report.stats.total}</p>
         </div>
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mb-3">
             <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -124,7 +124,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
           <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Completed</p>
           <p className="text-3xl font-bold text-emerald-600 mt-1">{report.stats.completed}</p>
         </div>
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center mb-3">
             <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -133,7 +133,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
           <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Incomplete</p>
           <p className="text-3xl font-bold text-rose-600 mt-1">{report.stats.incomplete}</p>
         </div>
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
             <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
