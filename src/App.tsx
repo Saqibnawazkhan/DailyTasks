@@ -1,8 +1,9 @@
-import { useState, useCallback, ReactNode } from 'react';
+import { useState, useCallback, ReactNode, useMemo } from 'react';
 import { useTasks } from './hooks/useTasks';
 import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
 import { MonthlyReport } from './pages/MonthlyReport';
+import { getToday } from './utils/date';
 
 type View = 'today' | 'calendar' | 'report';
 
@@ -13,6 +14,11 @@ function App() {
   const handleSelectDateFromCalendar = useCallback((_date: string) => {
     setCurrentView('today');
   }, []);
+
+  const todayTaskCount = useMemo(() => {
+    const today = getToday();
+    return tasks.filter(t => t.date === today && !t.completed).length;
+  }, [tasks]);
 
   // Show loading tasks
   if (!isLoaded) {
@@ -139,7 +145,7 @@ function App() {
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
-              className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
+              className={`relative flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
                 currentView === item.id
                   ? 'text-indigo-600 bg-indigo-50'
                   : 'text-gray-500'
@@ -147,6 +153,11 @@ function App() {
             >
               {item.icon}
               <span className="text-xs font-medium">{item.label}</span>
+              {item.id === 'today' && todayTaskCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                  {todayTaskCount > 9 ? '9+' : todayTaskCount}
+                </span>
+              )}
             </button>
           ))}
         </div>
