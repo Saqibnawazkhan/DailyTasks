@@ -10,9 +10,9 @@ interface TaskItemProps {
 }
 
 const priorityConfig = {
-  low: { bg: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-200', label: 'Low' },
-  medium: { bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200', label: 'Medium' },
-  high: { bg: 'bg-rose-100', text: 'text-rose-700', border: 'border-rose-200', label: 'High' }
+  low: { bg: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-200', label: 'Low', tooltip: 'Low priority - do when you have time' },
+  medium: { bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200', label: 'Medium', tooltip: 'Medium priority - complete soon' },
+  high: { bg: 'bg-rose-100', text: 'text-rose-700', border: 'border-rose-200', label: 'High', tooltip: 'High priority - urgent task!' }
 };
 
 export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) {
@@ -96,7 +96,10 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
         {(task.priority || (task.tags && task.tags.length > 0)) && (
           <div className="flex flex-wrap gap-1.5 mt-2">
             {task.priority && (
-              <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${priorityConfig[task.priority].bg} ${priorityConfig[task.priority].text} ${priorityConfig[task.priority].border}`}>
+              <span
+                className={`text-xs px-2.5 py-1 rounded-full font-medium border cursor-help ${priorityConfig[task.priority].bg} ${priorityConfig[task.priority].text} ${priorityConfig[task.priority].border}`}
+                title={priorityConfig[task.priority].tooltip}
+              >
                 {priorityConfig[task.priority].label}
               </span>
             )}
