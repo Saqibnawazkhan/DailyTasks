@@ -35,11 +35,26 @@ export function getDaysInMonth(yearMonth: string): string[] {
 
 export function formatDisplayDate(dateStr: string): string {
   const date = parseDate(dateStr);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  if (formatDate(date) === formatDate(today)) {
+    return 'Today';
+  }
+  if (formatDate(date) === formatDate(yesterday)) {
+    return 'Yesterday';
+  }
+  if (formatDate(date) === formatDate(tomorrow)) {
+    return 'Tomorrow';
+  }
+
   return date.toLocaleDateString('en-US', {
     weekday: 'short',
     month: 'short',
-    day: 'numeric',
-    year: 'numeric'
+    day: 'numeric'
   });
 }
 
