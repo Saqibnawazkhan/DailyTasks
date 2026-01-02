@@ -164,6 +164,27 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
         </div>
       </div>
 
+      {/* Priority Breakdown */}
+      <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">Priority Breakdown</h3>
+        <div className="grid grid-cols-3 gap-4">
+          {(['high', 'medium', 'low'] as const).map(priority => {
+            const count = filteredTasks.filter(t => t.priority === priority).length;
+            const completed = filteredTasks.filter(t => t.priority === priority && t.completed).length;
+            const percentage = count > 0 ? Math.round((completed / count) * 100) : 0;
+            return (
+              <div key={priority} className={`p-4 rounded-xl ${priorityColors[priority].replace('text-', 'bg-').split(' ')[0]}/30`}>
+                <p className={`text-xs font-bold uppercase tracking-wider ${priorityColors[priority].split(' ')[1]}`}>
+                  {priority}
+                </p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">{count}</p>
+                <p className="text-xs text-gray-500">{completed} done ({percentage}%)</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Daily Breakdown */}
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 overflow-hidden">
         <div className="p-5 border-b border-gray-100">
