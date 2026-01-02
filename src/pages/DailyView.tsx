@@ -55,31 +55,33 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
             </svg>
           </button>
 
-          <div className="flex items-center gap-4">
-            <div className="text-center">
+          <div className="flex items-center gap-3">
+            <div className="text-center min-w-[120px]">
               <h2 className="text-xl font-bold text-gray-900">
-                {isToday ? 'Today' : formatDisplayDate(selectedDate)}
+                {formatDisplayDate(selectedDate)}
               </h2>
-              {isToday && (
-                <p className="text-sm text-gray-500">{formatDisplayDate(selectedDate)}</p>
-              )}
+              <p className="text-xs text-gray-400 mt-0.5">
+                {new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' })}
+              </p>
             </div>
 
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="px-3 py-2 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 transition-colors"
-            />
+            <div className="flex items-center gap-2">
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="px-3 py-2 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 transition-colors"
+              />
 
-            {!isToday && (
-              <button
-                onClick={goToToday}
-                className="px-4 py-2 text-sm bg-indigo-100 text-indigo-700 rounded-xl font-medium hover:bg-indigo-200 transition-colors"
-              >
-                Today
-              </button>
-            )}
+              {!isToday && (
+                <button
+                  onClick={goToToday}
+                  className="px-3 py-2 text-sm bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-medium hover:from-indigo-700 hover:to-purple-700 transition-all shadow-sm"
+                >
+                  Today
+                </button>
+              )}
+            </div>
           </div>
 
           <button
