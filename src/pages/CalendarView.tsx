@@ -63,7 +63,8 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
     };
   };
 
-  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const weekDaysFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   return (
     <div className="space-y-6">
@@ -106,8 +107,8 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 overflow-hidden">
         {/* Week days header */}
         <div className="grid grid-cols-7 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-100">
-          {weekDays.map(day => (
-            <div key={day} className="py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+          {weekDays.map((day, index) => (
+            <div key={index} className="py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider" title={weekDaysFull[index]}>
               {day}
             </div>
           ))}
