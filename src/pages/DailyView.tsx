@@ -128,8 +128,8 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
         <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                progress === 100 ? 'bg-emerald-100' : 'bg-indigo-100'
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                progress === 100 ? 'bg-emerald-100 animate-pulse' : 'bg-indigo-100'
               }`}>
                 {progress === 100 ? (
                   <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,8 +148,8 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
                 </p>
               </div>
             </div>
-            <div className={`text-2xl font-bold ${
-              progress === 100 ? 'text-emerald-600' : 'text-indigo-600'
+            <div className={`text-2xl font-bold transition-all duration-300 ${
+              progress === 100 ? 'text-emerald-600 scale-110' : 'text-indigo-600'
             }`}>
               {progress}%
             </div>
@@ -164,6 +164,11 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
               style={{ width: `${progress}%` }}
             />
           </div>
+          {progress === 100 && (
+            <p className="text-center text-emerald-600 font-medium mt-3 text-sm">
+              All tasks completed! Great job!
+            </p>
+          )}
         </div>
       )}
     </div>
