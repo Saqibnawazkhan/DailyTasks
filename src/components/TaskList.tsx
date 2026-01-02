@@ -9,16 +9,17 @@ interface TaskListProps {
   emptyMessage?: string;
 }
 
-export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet. Add your first task!' }: TaskListProps) {
+export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet' }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-16">
-        <div className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      <div className="text-center py-16 bg-white/40 rounded-2xl border-2 border-dashed border-gray-200">
+        <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </div>
-        <p className="text-gray-500 font-medium">{emptyMessage}</p>
+        <p className="text-gray-500 font-medium mb-1">{emptyMessage}</p>
+        <p className="text-gray-400 text-sm">Add a task above to get started</p>
       </div>
     );
   }
