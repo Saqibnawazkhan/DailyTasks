@@ -44,8 +44,8 @@ export function generateMonthlyReport(tasks: Task[], yearMonth: string): Monthly
 }
 
 export function getCompletionGrade(percentage: number): { grade: string; color: string } {
-  if (percentage >= 90) return { grade: 'Excellent', color: 'text-green-600' };
-  if (percentage >= 70) return { grade: 'Good', color: 'text-blue-600' };
-  if (percentage >= 50) return { grade: 'Average', color: 'text-yellow-600' };
-  return { grade: 'Needs Improvement', color: 'text-red-600' };
+  if (percentage >= 90) return { grade: 'Outstanding', color: 'text-emerald-600' };
+  if (percentage >= 70) return { grade: 'Great', color: 'text-indigo-600' };
+  if (percentage >= 50) return { grade: 'Good', color: 'text-amber-600' };
+  return { grade: 'Keep Going', color: 'text-rose-600' };
 }
