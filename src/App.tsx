@@ -125,15 +125,15 @@ function App() {
       </main>
 
       {/* Mobile Navigation */}
-      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
-        <div className="flex justify-around">
+      <nav className="sm:hidden fixed bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-gray-200/50 rounded-2xl shadow-lg z-30">
+        <div className="flex justify-around py-2">
           {navItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
-              className={`flex flex-col items-center gap-1 py-3 px-6 transition-colors ${
+              className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
                 currentView === item.id
-                  ? 'text-blue-600'
+                  ? 'text-indigo-600 bg-indigo-50'
                   : 'text-gray-500'
               }`}
             >
