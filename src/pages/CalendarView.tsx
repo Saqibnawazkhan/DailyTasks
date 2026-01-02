@@ -177,18 +177,20 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
       </div>
 
       {/* Legend */}
-      <div className="flex justify-center gap-6 text-sm">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-2 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
-          <span className="text-gray-600">Complete</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full"></div>
-          <span className="text-gray-600">50%+ done</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-2 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full"></div>
-          <span className="text-gray-600">In progress</span>
+      <div className="bg-white/60 backdrop-blur-sm py-4 px-6 rounded-2xl border border-white/50">
+        <div className="flex justify-center gap-8 text-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
+            <span className="text-gray-600 font-medium">100%</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full"></div>
+            <span className="text-gray-600 font-medium">50%+</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full"></div>
+            <span className="text-gray-600 font-medium">&lt;50%</span>
+          </div>
         </div>
       </div>
     </div>
