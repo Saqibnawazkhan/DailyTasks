@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactNode, useMemo } from 'react';
+import { useState, useCallback, ReactNode, useMemo, useEffect } from 'react';
 import { useTasks } from './hooks/useTasks';
 import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
@@ -10,6 +10,18 @@ type View = 'today' | 'calendar' | 'report';
 function App() {
   const [currentView, setCurrentView] = useState<View>('today');
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError } = useTasks();
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === '1') setCurrentView('today');
+      if (e.key === '2') setCurrentView('calendar');
+      if (e.key === '3') setCurrentView('report');
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const handleSelectDateFromCalendar = useCallback((_date: string) => {
     setCurrentView('today');
