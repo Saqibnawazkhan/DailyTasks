@@ -9,10 +9,10 @@ interface TaskItemProps {
   onDelete: (id: string) => void;
 }
 
-const priorityColors = {
-  low: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  medium: 'bg-amber-100 text-amber-700 border-amber-200',
-  high: 'bg-rose-100 text-rose-700 border-rose-200'
+const priorityConfig = {
+  low: { bg: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-200', label: 'Low' },
+  medium: { bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200', label: 'Medium' },
+  high: { bg: 'bg-rose-100', text: 'text-rose-700', border: 'border-rose-200', label: 'High' }
 };
 
 export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) {
@@ -91,8 +91,8 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
         {(task.priority || (task.tags && task.tags.length > 0)) && (
           <div className="flex flex-wrap gap-1.5 mt-2">
             {task.priority && (
-              <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${priorityColors[task.priority]}`}>
-                {task.priority}
+              <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${priorityConfig[task.priority].bg} ${priorityConfig[task.priority].text} ${priorityConfig[task.priority].border}`}>
+                {priorityConfig[task.priority].label}
               </span>
             )}
             {task.tags?.map(tag => (
