@@ -1,11 +1,8 @@
 import { useState, useCallback, ReactNode } from 'react';
-import { useAuth } from './hooks/useAuth';
 import { useTasks } from './hooks/useTasks';
 import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
 import { MonthlyReport } from './pages/MonthlyReport';
-import { AuthPage } from './pages/AuthPage';
-import { supabase } from './lib/supabase';
 
 type View = 'today' | 'calendar' | 'report';
 
