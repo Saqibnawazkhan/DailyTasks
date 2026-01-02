@@ -81,7 +81,7 @@ function App() {
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
+                  className={`relative flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
                     currentView === item.id
                       ? 'bg-white text-indigo-600 shadow-sm'
                       : 'text-gray-600 hover:text-gray-900'
@@ -89,6 +89,11 @@ function App() {
                 >
                   {item.icon}
                   <span className="font-medium">{item.label}</span>
+                  {item.id === 'today' && todayTaskCount > 0 && (
+                    <span className="ml-1 px-1.5 py-0.5 bg-rose-500 text-white text-xs font-bold rounded-full min-w-[20px] text-center">
+                      {todayTaskCount > 9 ? '9+' : todayTaskCount}
+                    </span>
+                  )}
                 </button>
               ))}
             </nav>
