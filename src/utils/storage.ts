@@ -1,6 +1,6 @@
 import { Task } from '../types/task';
 
-const STORAGE_KEY = 'daily_tasks_app_v1';
+const STORAGE_KEY = 'taskflow_data_v2';
 
 export function loadTasks(): Task[] {
   try {
