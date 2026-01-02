@@ -155,6 +155,13 @@ function App() {
         )}
       </main>
 
+      {/* Footer */}
+      <footer className="hidden sm:block max-w-5xl mx-auto px-4 pb-6">
+        <div className="text-center text-sm text-gray-400 pt-8 border-t border-gray-200/50">
+          <p>TaskFlow v2.0 — Press <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 font-mono text-xs">1</kbd> <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 font-mono text-xs">2</kbd> <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 font-mono text-xs">3</kbd> to navigate</p>
+        </div>
+      </footer>
+
       {/* Mobile Navigation */}
       <nav className="sm:hidden fixed bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-gray-200/50 rounded-2xl shadow-lg z-30">
         <div className="flex justify-around py-2">
