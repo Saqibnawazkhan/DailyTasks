@@ -3,7 +3,9 @@
   "private": true,
   "version": "2.0.0",
   "type": "module",
-  "description": "A simple and beautiful task manager",
+  "description": "A simple and beautiful task manager with modern glassmorphism UI",
+  "author": "TaskFlow Team",
+  "keywords": ["task", "manager", "productivity", "react", "typescript"],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
