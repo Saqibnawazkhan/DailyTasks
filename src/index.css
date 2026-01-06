@@ -44,6 +44,16 @@ body {
   html {
     scroll-behavior: smooth;
   }
+
+  * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Smooth scrollbar on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c4c4c4 transparent;
 }
 
 /* Input date styling */
