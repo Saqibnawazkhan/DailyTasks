@@ -51,10 +51,10 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
 
   return (
     <div
-      className={`group relative flex items-start gap-4 p-4 rounded-2xl border-2 transition-all duration-300 ${
+      className={`group relative flex items-start gap-4 p-4 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
         task.completed
-          ? 'bg-gray-50/80 border-gray-100 scale-[0.98]'
-          : 'bg-white/80 backdrop-blur-sm border-white/50 hover:border-indigo-200 hover:shadow-md hover:scale-[1.01]'
+          ? 'bg-gray-50/80 border-gray-100 scale-[0.98] opacity-75 hover:opacity-100'
+          : 'bg-white/90 backdrop-blur-sm border-white/50 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-100/50 hover:scale-[1.02] hover:-translate-y-1'
       }`}
     >
       {/* Checkbox */}
