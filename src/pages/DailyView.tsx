@@ -100,19 +100,25 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
       <div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="group flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-indigo-600 mb-4 transition-colors"
+          className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-indigo-600 mb-4 transition-all duration-300"
         >
-          <span className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all duration-200 group-hover:scale-110 ${
-            showForm ? 'bg-indigo-500 text-white rotate-45' : 'bg-gray-100 text-gray-500 group-hover:bg-indigo-100 group-hover:text-indigo-600'
+          <span className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-md group-hover:shadow-lg ${
+            showForm
+              ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white rotate-45 scale-110'
+              : 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white group-hover:scale-110 group-hover:shadow-indigo-200'
           }`}>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
             </svg>
           </span>
-          {showForm ? 'Hide form' : 'Add new task'}
+          <span className="transition-all duration-300">
+            {showForm ? '✕ Close form' : '✨ Add new task'}
+          </span>
         </button>
 
-        {showForm && <TaskForm onSubmit={handleAddTask} initialData={{ date: selectedDate }} />}
+        <div className={`transition-all duration-300 ${showForm ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none h-0 overflow-hidden'}`}>
+          {showForm && <TaskForm onSubmit={handleAddTask} initialData={{ date: selectedDate }} />}
+        </div>
       </div>
 
       {/* Task List */}
