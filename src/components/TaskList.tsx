@@ -12,14 +12,14 @@ interface TaskListProps {
 export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet' }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-16 bg-white/40 rounded-2xl border-2 border-dashed border-gray-200">
-        <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="text-center py-16 bg-white/40 rounded-2xl border-2 border-dashed border-gray-200 hover:border-indigo-300 transition-all duration-300">
+        <div className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-3xl flex items-center justify-center mx-auto mb-4 animate-bounce">
+          <svg className="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </div>
-        <p className="text-gray-500 font-medium mb-1">{emptyMessage}</p>
-        <p className="text-gray-400 text-sm">Add a task above to get started</p>
+        <p className="text-gray-600 font-semibold text-lg mb-1">{emptyMessage}</p>
+        <p className="text-gray-400 text-sm">Add a task above to get started ✨</p>
       </div>
     );
   }
@@ -39,14 +39,19 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
             </span>
           </h3>
           <div className="space-y-3">
-            {pendingTasks.map(task => (
-              <TaskItem
+            {pendingTasks.map((task, index) => (
+              <div
                 key={task.id}
-                task={task}
-                onToggle={onToggle}
-                onUpdate={onUpdate}
-                onDelete={onDelete}
-              />
+                style={{ animationDelay: `${index * 50}ms` }}
+                className="animate-fade-in"
+              >
+                <TaskItem
+                  task={task}
+                  onToggle={onToggle}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -62,14 +67,19 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
             </span>
           </h3>
           <div className="space-y-3">
-            {completedTasks.map(task => (
-              <TaskItem
+            {completedTasks.map((task, index) => (
+              <div
                 key={task.id}
-                task={task}
-                onToggle={onToggle}
-                onUpdate={onUpdate}
-                onDelete={onDelete}
-              />
+                style={{ animationDelay: `${index * 50}ms` }}
+                className="animate-fade-in"
+              >
+                <TaskItem
+                  task={task}
+                  onToggle={onToggle}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
+                />
+              </div>
             ))}
           </div>
         </div>
