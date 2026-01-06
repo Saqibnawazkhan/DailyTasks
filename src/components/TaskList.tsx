@@ -32,9 +32,12 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
       {pendingTasks.length > 0 && (
         <div>
           <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-            <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+            </span>
             Pending
-            <span className="text-xs font-normal bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-2.5 py-1 rounded-full shadow-sm">
               {pendingTasks.length}
             </span>
           </h3>
@@ -60,9 +63,11 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
       {completedTasks.length > 0 && (
         <div>
           <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-            <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-            Completed
-            <span className="text-xs font-normal bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full">
+            <span className="relative flex h-3 w-3">
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
+            Completed ✨
+            <span className="text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-2.5 py-1 rounded-full shadow-sm">
               {completedTasks.length}
             </span>
           </h3>
