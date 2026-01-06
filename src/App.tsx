@@ -182,22 +182,26 @@ function App() {
       </footer>
 
       {/* Mobile Navigation */}
-      <nav className="sm:hidden fixed bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-gray-200/50 rounded-2xl shadow-lg z-30">
-        <div className="flex justify-around py-2">
+      <nav className="sm:hidden fixed bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl border border-white/50 rounded-3xl shadow-2xl shadow-gray-200/50 z-30">
+        <div className="flex justify-around py-3 px-2">
           {navItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
-              className={`relative flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
+              className={`relative flex flex-col items-center gap-1 py-2 px-5 rounded-2xl transition-all duration-300 ${
                 currentView === item.id
-                  ? 'text-indigo-600 bg-indigo-50'
-                  : 'text-gray-500'
+                  ? 'text-white bg-gradient-to-r from-indigo-500 to-purple-500 shadow-lg shadow-indigo-200 scale-105'
+                  : 'text-gray-500 hover:text-gray-700 active:scale-95'
               }`}
             >
-              {item.icon}
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className={`transition-transform duration-300 ${currentView === item.id ? 'scale-110' : ''}`}>
+                {item.icon}
+              </span>
+              <span className="text-xs font-semibold">{item.label}</span>
               {item.id === 'today' && todayTaskCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                <span className={`absolute -top-1 -right-1 w-5 h-5 text-xs font-bold rounded-full flex items-center justify-center animate-bounce ${
+                  currentView === item.id ? 'bg-white text-indigo-600' : 'bg-rose-500 text-white'
+                }`}>
                   {todayTaskCount > 9 ? '9+' : todayTaskCount}
                 </span>
               )}
