@@ -65,7 +65,7 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+    <form onSubmit={handleSubmit} className="space-y-4 bg-white/90 backdrop-blur-sm p-6 rounded-3xl shadow-xl border-2 border-transparent bg-gradient-to-r from-white via-white to-white relative before:absolute before:inset-0 before:rounded-3xl before:p-[2px] before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 before:-z-10 before:animate-gradient">
       <div>
         <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
           What needs to be done?
