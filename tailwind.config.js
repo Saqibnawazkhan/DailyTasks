@@ -13,6 +13,7 @@ export default {
         'spin-slow': 'spin 2s linear infinite',
         'bounce-once': 'bounce-once 0.3s ease-out',
         'ping-once': 'ping-once 0.4s ease-out forwards',
+        'blob': 'blob 7s infinite',
       },
       keyframes: {
         'bounce-once': {
@@ -22,6 +23,12 @@ export default {
         'ping-once': {
           '0%': { transform: 'scale(1)', opacity: '0.5' },
           '100%': { transform: 'scale(2)', opacity: '0' },
+        },
+        'blob': {
+          '0%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+          '100%': { transform: 'translate(0px, 0px) scale(1)' },
         },
       },
     },

@@ -282,3 +282,12 @@ main > div {
 .animate-scale-up {
   animation: scaleUp 0.3s ease-out;
 }
+
+/* Animation delays */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
