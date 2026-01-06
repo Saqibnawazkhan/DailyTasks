@@ -234,3 +234,51 @@ main > div {
 .animate-pulse-glow {
   animation: pulseGlow 2s ease-in-out infinite;
 }
+
+/* Sparkle effect */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+/* Rainbow text */
+@keyframes rainbow {
+  0% { color: #ef4444; }
+  14% { color: #f97316; }
+  28% { color: #eab308; }
+  42% { color: #22c55e; }
+  57% { color: #3b82f6; }
+  71% { color: #6366f1; }
+  85% { color: #a855f7; }
+  100% { color: #ef4444; }
+}
+
+.animate-rainbow {
+  animation: rainbow 3s linear infinite;
+}
+
+/* Wobble animation */
+@keyframes wobble {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.animate-wobble {
+  animation: wobble 1s ease-in-out infinite;
+}
+
+/* Scale up animation */
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.3s ease-out;
+}
