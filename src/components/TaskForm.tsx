@@ -75,9 +75,11 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter your task..."
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-colors ${
-            errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 focus:border-indigo-400 bg-gray-50/50'
+          placeholder="✨ Enter your task..."
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 ${
+            errors.title
+              ? 'border-red-400 bg-red-50 animate-shake'
+              : 'border-gray-200 focus:border-indigo-400 focus:shadow-lg focus:shadow-indigo-100 bg-gray-50/50'
           }`}
           maxLength={TITLE_MAX_LENGTH}
         />
@@ -95,10 +97,12 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
           id="notes"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Add some details..."
+          placeholder="📝 Add some details..."
           rows={2}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-colors resize-none ${
-            errors.notes ? 'border-red-400 bg-red-50' : 'border-gray-200 focus:border-indigo-400 bg-gray-50/50'
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 resize-none ${
+            errors.notes
+              ? 'border-red-400 bg-red-50 animate-shake'
+              : 'border-gray-200 focus:border-indigo-400 focus:shadow-lg focus:shadow-indigo-100 bg-gray-50/50'
           }`}
           maxLength={NOTES_MAX_LENGTH}
         />
