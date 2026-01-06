@@ -12,14 +12,17 @@ interface TaskListProps {
 export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet' }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-16 bg-white/40 rounded-2xl border-2 border-dashed border-gray-200 hover:border-indigo-300 transition-all duration-300">
-        <div className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-3xl flex items-center justify-center mx-auto mb-4 animate-bounce">
-          <svg className="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
+      <div className="text-center py-16 bg-white/60 backdrop-blur-sm rounded-3xl border-2 border-dashed border-indigo-200 hover:border-indigo-400 transition-all duration-500 hover:shadow-lg hover:shadow-indigo-100/50 group">
+        <div className="w-24 h-24 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 rounded-3xl flex items-center justify-center mx-auto mb-6 animate-bounce group-hover:animate-wobble">
+          <span className="text-5xl">📝</span>
         </div>
-        <p className="text-gray-600 font-semibold text-lg mb-1">{emptyMessage}</p>
-        <p className="text-gray-400 text-sm">Add a task above to get started ✨</p>
+        <p className="text-gray-700 font-bold text-xl mb-2">{emptyMessage}</p>
+        <p className="text-gray-500 mb-4">Your productivity journey starts here!</p>
+        <div className="flex justify-center gap-2 text-sm text-gray-400">
+          <span className="px-3 py-1 bg-gray-100 rounded-full">✨ Stay organized</span>
+          <span className="px-3 py-1 bg-gray-100 rounded-full">🎯 Track progress</span>
+          <span className="px-3 py-1 bg-gray-100 rounded-full">🚀 Get things done</span>
+        </div>
       </div>
     );
   }
