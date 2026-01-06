@@ -56,12 +56,12 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
           </button>
 
           <div className="flex items-center gap-3">
-            <div className="text-center min-w-[120px]">
-              <h2 className="text-xl font-bold text-gray-900">
+            <div className="text-center min-w-[140px]">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 {formatDisplayDate(selectedDate)}
               </h2>
-              <p className="text-xs text-gray-400 mt-0.5">
-                {new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' })}
+              <p className="text-sm text-gray-500 mt-1 font-medium">
+                {isToday ? '🌟 ' : ''}{new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' })}
               </p>
             </div>
 
