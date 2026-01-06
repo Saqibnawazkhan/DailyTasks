@@ -73,30 +73,30 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
         <div className="flex items-center justify-between">
           <button
             onClick={goToPrevMonth}
-            className="p-2.5 rounded-xl hover:bg-gray-100 transition-colors"
+            className="p-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 active:scale-90"
             aria-label="Previous month"
           >
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
           <div className="flex items-center gap-4">
-            <h2 className="text-xl font-bold text-gray-900">{monthLabel}</h2>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">{monthLabel}</h2>
             <button
               onClick={goToCurrentMonth}
-              className="px-4 py-2 text-sm bg-indigo-100 text-indigo-700 rounded-xl font-medium hover:bg-indigo-200 transition-colors"
+              className="btn-ripple px-4 py-2 text-sm bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
             >
-              Today
+              📅 Today
             </button>
           </div>
 
           <button
             onClick={goToNextMonth}
-            className="p-2.5 rounded-xl hover:bg-gray-100 transition-colors"
+            className="p-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 active:scale-90"
             aria-label="Next month"
           >
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
