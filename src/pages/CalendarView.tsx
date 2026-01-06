@@ -131,16 +131,16 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
               <button
                 key={day}
                 onClick={() => onSelectDate(date)}
-                className={`h-24 p-2 border-b border-r border-gray-50 text-left transition-all duration-200 flex flex-col ${
+                className={`h-24 p-2 border-b border-r border-gray-50 text-left transition-all duration-300 flex flex-col relative group ${
                   isToday
-                    ? 'bg-indigo-50 hover:bg-indigo-100'
-                    : 'hover:bg-gray-50'
+                    ? 'bg-gradient-to-br from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 ring-2 ring-indigo-300 ring-inset'
+                    : 'hover:bg-gradient-to-br hover:from-gray-50 hover:to-indigo-50 hover:scale-[1.02] hover:z-10 hover:shadow-lg'
                 }`}
               >
-                <span className={`text-sm font-semibold inline-flex items-center justify-center w-7 h-7 rounded-full ${
+                <span className={`text-sm font-semibold inline-flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300 ${
                   isToday
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-gray-700'
+                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                    : 'text-gray-700 group-hover:bg-indigo-100 group-hover:text-indigo-700'
                 }`}>
                   {day}
                 </span>
