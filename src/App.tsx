@@ -98,15 +98,23 @@ function App() {
       <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/50 sticky top-0 z-30">
         <div className="max-w-5xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform animate-gradient" onClick={() => setCurrentView('today')}>
-              <div className="relative">
-                <svg className="w-7 h-7 text-indigo-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <div className="absolute inset-0 bg-indigo-400 blur-lg opacity-30 animate-pulse"></div>
-              </div>
-              TaskFlow
-            </h1>
+            <div className="flex items-center gap-4">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform animate-gradient" onClick={() => setCurrentView('today')}>
+                <div className="relative">
+                  <svg className="w-7 h-7 text-indigo-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <div className="absolute inset-0 bg-indigo-400 blur-lg opacity-30 animate-pulse"></div>
+                </div>
+                TaskFlow
+              </h1>
+              {tasks.length > 0 && (
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
+                  <span className="text-sm text-gray-600">{tasks.filter(t => t.completed).length}/{tasks.length}</span>
+                  <span className="text-xs text-indigo-500 font-medium">done</span>
+                </div>
+              )}
+            </div>
 
             {/* Desktop Navigation */}
             <nav className="hidden sm:flex gap-1 bg-gray-100/80 p-1.5 rounded-2xl">
