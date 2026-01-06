@@ -131,44 +131,44 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
 
       {/* Progress Stats */}
       {dayTasks.length > 0 && (
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                progress === 100 ? 'bg-emerald-100 animate-pulse' : 'bg-indigo-100'
+        <div className={`bg-white/80 backdrop-blur-sm p-6 rounded-3xl shadow-lg border-2 transition-all duration-500 ${
+          progress === 100 ? 'border-emerald-200 bg-gradient-to-br from-white to-emerald-50' : 'border-white/50'
+        }`}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 ${
+                progress === 100 ? 'bg-gradient-to-br from-emerald-400 to-teal-400 shadow-lg shadow-emerald-200 animate-bounce' : 'bg-gradient-to-br from-indigo-100 to-purple-100'
               }`}>
                 {progress === 100 ? (
-                  <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <span className="text-2xl">🏆</span>
                 ) : (
-                  <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
+                  <span className="text-2xl">📊</span>
                 )}
               </div>
               <div>
-                <p className="text-sm text-gray-500">Daily Progress</p>
-                <p className="font-bold text-gray-900">
-                  {completedCount} of {dayTasks.length} completed
+                <p className="text-sm text-gray-500 font-medium">Daily Progress</p>
+                <p className="font-bold text-gray-900 text-lg">
+                  <span className="text-indigo-600">{completedCount}</span> of <span className="text-gray-600">{dayTasks.length}</span> tasks
                 </p>
               </div>
             </div>
-            <div className={`text-2xl font-bold transition-all duration-300 ${
-              progress === 100 ? 'text-emerald-600 scale-110' : 'text-indigo-600'
+            <div className={`text-4xl font-bold transition-all duration-500 ${
+              progress === 100 ? 'text-emerald-500 scale-110 animate-pulse' : 'text-indigo-600'
             }`}>
               {progress}%
             </div>
           </div>
-          <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-4 bg-gray-100 rounded-full overflow-hidden shadow-inner">
             <div
-              className={`h-full rounded-full transition-all duration-500 ${
+              className={`h-full rounded-full transition-all duration-700 ease-out relative ${
                 progress === 100
-                  ? 'bg-gradient-to-r from-emerald-400 to-teal-400'
-                  : 'bg-gradient-to-r from-indigo-500 to-purple-500'
+                  ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 animate-gradient'
+                  : 'bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 animate-gradient'
               }`}
               style={{ width: `${progress}%` }}
-            />
+            >
+              <div className="absolute inset-0 bg-white/20 rounded-full"></div>
+            </div>
           </div>
           {progress === 100 && (
             <div className="text-center mt-4 animate-celebrate">
