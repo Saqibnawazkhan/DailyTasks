@@ -103,21 +103,25 @@ function App() {
             </h1>
 
             {/* Desktop Navigation */}
-            <nav className="hidden sm:flex gap-2 bg-gray-100/80 p-1 rounded-xl">
+            <nav className="hidden sm:flex gap-1 bg-gray-100/80 p-1.5 rounded-2xl">
               {navItems.map(item => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id)}
-                  className={`relative flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
+                  className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 ${
                     currentView === item.id
-                      ? 'bg-white text-indigo-600 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-200'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
                   }`}
                 >
-                  {item.icon}
+                  <span className={`transition-transform duration-300 ${currentView === item.id ? 'scale-110' : ''}`}>
+                    {item.icon}
+                  </span>
                   <span className="font-medium">{item.label}</span>
                   {item.id === 'today' && todayTaskCount > 0 && (
-                    <span className="ml-1 px-1.5 py-0.5 bg-rose-500 text-white text-xs font-bold rounded-full min-w-[20px] text-center">
+                    <span className={`ml-1 px-1.5 py-0.5 text-xs font-bold rounded-full min-w-[20px] text-center animate-pulse ${
+                      currentView === item.id ? 'bg-white/20 text-white' : 'bg-rose-500 text-white'
+                    }`}>
                       {todayTaskCount > 9 ? '9+' : todayTaskCount}
                     </span>
                   )}
