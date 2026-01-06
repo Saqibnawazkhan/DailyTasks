@@ -165,8 +165,21 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
             />
           </div>
           {progress === 100 && (
-            <p className="text-center text-emerald-600 font-medium mt-3 text-sm">
-              All tasks completed! Great job!
+            <div className="text-center mt-4 animate-celebrate">
+              <p className="text-emerald-600 font-bold text-lg">
+                🎉 All tasks completed! 🎉
+              </p>
+              <p className="text-gray-500 text-sm mt-1">You're on fire! Keep up the great work!</p>
+            </div>
+          )}
+          {progress >= 50 && progress < 100 && (
+            <p className="text-center text-indigo-600 font-medium mt-3 text-sm">
+              💪 Halfway there! Keep going!
+            </p>
+          )}
+          {progress > 0 && progress < 50 && (
+            <p className="text-center text-gray-500 font-medium mt-3 text-sm">
+              🚀 Great start! You've got this!
             </p>
           )}
         </div>
