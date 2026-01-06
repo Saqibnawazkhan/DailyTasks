@@ -119,10 +119,10 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
             onChange={(e) => setPriority(e.target.value as Priority | '')}
             className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 bg-gray-50/50 text-sm transition-colors"
           >
-            <option value="">None</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+            <option value="">⚪ None</option>
+            <option value="low">🟢 Low</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="high">🔴 High</option>
           </select>
         </div>
 
