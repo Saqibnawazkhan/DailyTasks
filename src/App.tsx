@@ -140,16 +140,14 @@ function App() {
 
       {/* Error Banner */}
       {error && (
-        <div className="mx-4 mt-4">
-          <div className="max-w-5xl mx-auto bg-rose-50 border border-rose-200 rounded-xl px-4 py-3 flex items-center gap-3">
-            <div className="w-8 h-8 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <svg className="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+        <div className="mx-4 mt-4 animate-slide-in-right">
+          <div className="max-w-5xl mx-auto bg-gradient-to-r from-rose-50 to-red-50 border border-rose-200 rounded-2xl px-5 py-4 flex items-center gap-4 shadow-lg shadow-rose-100/50">
+            <div className="w-10 h-10 bg-gradient-to-br from-rose-100 to-red-100 rounded-xl flex items-center justify-center flex-shrink-0 animate-shake">
+              <span className="text-xl">⚠️</span>
             </div>
-            <p className="text-sm text-rose-700 flex-1">{error}</p>
-            <button onClick={clearError} className="p-1.5 hover:bg-rose-100 rounded-lg transition-colors">
-              <svg className="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <p className="text-sm text-rose-700 flex-1 font-medium">{error}</p>
+            <button onClick={clearError} className="p-2 hover:bg-rose-100 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95">
+              <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
