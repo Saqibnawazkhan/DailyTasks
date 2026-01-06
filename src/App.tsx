@@ -179,9 +179,20 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="hidden sm:block max-w-5xl mx-auto px-4 pb-6">
+      <footer className="hidden sm:block max-w-5xl mx-auto px-4 pb-6 relative z-10">
         <div className="text-center text-sm text-gray-400 pt-8 border-t border-gray-200/50">
-          <p>TaskFlow v2.0 — Press <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 font-mono text-xs">1</kbd> <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 font-mono text-xs">2</kbd> <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 font-mono text-xs">3</kbd> to navigate</p>
+          <div className="flex items-center justify-center gap-6 mb-2">
+            <span className="flex items-center gap-2 hover:text-indigo-500 transition-colors cursor-default">
+              <span className="text-lg">⚡</span> TaskFlow v2.0
+            </span>
+            <span className="text-gray-300">|</span>
+            <span className="flex items-center gap-1">
+              Press <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">1</kbd>
+              <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">2</kbd>
+              <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">3</kbd> to navigate
+            </span>
+          </div>
+          <p className="text-xs text-gray-400">Made with ❤️ for productivity lovers</p>
         </div>
       </footer>
 
