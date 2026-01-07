@@ -51,6 +51,22 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
 
   const { grade, color } = getCompletionGrade(report.stats.completionPercentage);
 
+  // Calculate current streak
+  const currentStreak = useMemo(() => {
+    const sortedDays = [...report.dailyBreakdown].sort((a, b) =>
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    let streak = 0;
+    for (const day of sortedDays) {
+      if (day.completionPercentage === 100 && day.total > 0) {
+        streak++;
+      } else if (day.total > 0) {
+        break;
+      }
+    }
+    return streak;
+  }, [report.dailyBreakdown]);
+
   const priorityColors = {
     low: 'bg-emerald-100 text-emerald-700',
     medium: 'bg-amber-100 text-amber-700',
@@ -144,6 +160,22 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
           <p className={`text-xs font-medium ${color}`}>{grade}</p>
         </div>
       </div>
+
+      {/* Streak Display */}
+      {currentStreak > 0 && (
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-5 rounded-2xl shadow-lg border border-amber-200 animate-fade-in">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-400 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-200 animate-bounce">
+              <span className="text-2xl">🔥</span>
+            </div>
+            <div>
+              <p className="text-sm font-bold text-amber-700 uppercase tracking-wider">Current Streak</p>
+              <p className="text-3xl font-bold text-amber-600">{currentStreak} day{currentStreak !== 1 ? 's' : ''}</p>
+              <p className="text-xs text-amber-600 mt-1">Keep completing all tasks daily!</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Completion Progress Bar */}
       <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
