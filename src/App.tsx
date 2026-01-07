@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactNode, useMemo, useEffect } from 'react';
+import { useState, useCallback, ReactNode, useMemo, useEffect, useRef } from 'react';
 import { useTasks } from './hooks/useTasks';
 import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
@@ -9,7 +9,21 @@ type View = 'today' | 'calendar' | 'report';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('today');
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError } = useTasks();
+
+  // Scroll to top button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -203,6 +217,19 @@ function App() {
           <p className="text-xs text-gray-400">Made with ❤️ for productivity lovers</p>
         </div>
       </footer>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 z-40 w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full shadow-lg shadow-indigo-200 hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce-once flex items-center justify-center"
+          aria-label="Scroll to top"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
+      )}
 
       {/* Mobile Navigation */}
       <nav className="sm:hidden fixed bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl border border-white/50 rounded-3xl shadow-2xl shadow-gray-200/50 z-30">
