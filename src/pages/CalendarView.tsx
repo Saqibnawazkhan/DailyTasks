@@ -153,8 +153,13 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
                         completionPercent >= 50 ? 'text-indigo-600' :
                         'text-amber-600'
                       }`}>
-                        {stats.completed}/{stats.total}
+                        {completionPercent === 100 ? '✓' : ''} {stats.completed}/{stats.total}
                       </span>
+                      {stats.total - stats.completed > 0 && (
+                        <span className="w-4 h-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
+                          {stats.total - stats.completed}
+                        </span>
+                      )}
                     </div>
                     <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                       <div
