@@ -61,7 +61,7 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
       <div className="relative mt-0.5">
         <button
           onClick={() => onToggle(task.id)}
-          className={`relative flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+          className={`relative flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 btn-press ${
             task.completed
               ? 'bg-gradient-to-r from-emerald-400 to-teal-400 border-transparent text-white shadow-md shadow-emerald-200'
               : 'border-gray-300 hover:border-indigo-400 hover:bg-indigo-50 hover:scale-110'
@@ -75,7 +75,10 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
           )}
         </button>
         {task.completed && (
-          <span className="absolute inset-0 rounded-full animate-ping-once bg-emerald-400/30"></span>
+          <>
+            <span className="absolute inset-0 rounded-full animate-ping-once bg-emerald-400/30"></span>
+            <span className="absolute -inset-1 rounded-full animate-ping-once bg-emerald-300/20"></span>
+          </>
         )}
       </div>
 
