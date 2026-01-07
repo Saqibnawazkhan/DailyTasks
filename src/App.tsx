@@ -63,6 +63,16 @@ function App() {
     }
   }, [todayTaskCount]);
 
+  // Fun loading messages
+  const loadingMessages = [
+    "Brewing productivity magic...",
+    "Gathering your tasks...",
+    "Preparing your workspace...",
+    "Loading awesome features...",
+    "Almost there...",
+  ];
+  const randomLoadingMsg = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+
   // Show loading screen with fun animation
   if (!isLoaded) {
     return (
@@ -77,7 +87,8 @@ function App() {
             </div>
           </div>
           <p className="text-gray-600 font-medium text-lg">Loading TaskFlow</p>
-          <div className="flex justify-center gap-1 mt-2">
+          <p className="text-gray-400 text-sm mt-1">{randomLoadingMsg}</p>
+          <div className="flex justify-center gap-1 mt-3">
             <span className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
             <span className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
             <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
