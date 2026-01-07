@@ -207,25 +207,27 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-4 py-6 pb-24 sm:pb-6">
-        {currentView === 'today' && (
-          <DailyView
-            tasks={tasks}
-            getTasksByDate={getTasksByDate}
-            onAddTask={addTask}
-            onToggle={toggleTask}
-            onUpdate={updateTask}
-            onDelete={deleteTask}
-          />
-        )}
-        {currentView === 'calendar' && (
-          <CalendarView
-            tasks={tasks}
-            onSelectDate={handleSelectDateFromCalendar}
-          />
-        )}
-        {currentView === 'report' && (
-          <MonthlyReport tasks={tasks} />
-        )}
+        <div key={currentView} className="animate-fade-in">
+          {currentView === 'today' && (
+            <DailyView
+              tasks={tasks}
+              getTasksByDate={getTasksByDate}
+              onAddTask={addTask}
+              onToggle={toggleTask}
+              onUpdate={updateTask}
+              onDelete={deleteTask}
+            />
+          )}
+          {currentView === 'calendar' && (
+            <CalendarView
+              tasks={tasks}
+              onSelectDate={handleSelectDateFromCalendar}
+            />
+          )}
+          {currentView === 'report' && (
+            <MonthlyReport tasks={tasks} />
+          )}
+        </div>
       </main>
 
       {/* Footer */}
