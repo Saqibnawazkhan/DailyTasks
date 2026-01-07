@@ -1,8 +1,17 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Task, TaskFormData } from '../types/task';
 import { TaskForm } from '../components/TaskForm';
 import { TaskList } from '../components/TaskList';
 import { getToday, formatDisplayDate } from '../utils/date';
+
+// Get greeting based on time of day
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return { text: 'Good morning', emoji: '🌅' };
+  if (hour < 17) return { text: 'Good afternoon', emoji: '☀️' };
+  if (hour < 21) return { text: 'Good evening', emoji: '🌆' };
+  return { text: 'Good night', emoji: '🌙' };
+}
 
 interface DailyViewProps {
   tasks: Task[];
@@ -21,6 +30,7 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
   const isToday = selectedDate === getToday();
   const completedCount = dayTasks.filter(t => t.completed).length;
   const progress = dayTasks.length > 0 ? Math.round((completedCount / dayTasks.length) * 100) : 0;
+  const greeting = useMemo(() => getGreeting(), []);
 
   const handleAddTask = (data: TaskFormData) => {
     onAddTask({ ...data, date: selectedDate });
@@ -42,6 +52,23 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
 
   return (
     <div className="space-y-6">
+      {/* Greeting Banner - only show for today */}
+      {isToday && (
+        <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-2xl shadow-lg text-white animate-fade-in">
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">{greeting.emoji}</span>
+            <div>
+              <p className="text-lg font-bold">{greeting.text}!</p>
+              <p className="text-sm text-white/80">
+                {dayTasks.length === 0 ? 'Ready to be productive?' :
+                 progress === 100 ? 'All tasks completed! Amazing!' :
+                 `You have ${dayTasks.length - completedCount} task${dayTasks.length - completedCount !== 1 ? 's' : ''} remaining`}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Date Navigation Card */}
       <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white/50">
         <div className="flex items-center justify-between">
