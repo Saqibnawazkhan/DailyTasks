@@ -421,3 +421,39 @@ input:focus, textarea:focus, select:focus {
 .underline-hover:hover::after {
   width: 100%;
 }
+
+/* Card shadow pulse on hover */
+@keyframes shadowPulse {
+  0%, 100% {
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1), 0 4px 6px -4px rgba(99, 102, 241, 0.1);
+  }
+  50% {
+    box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2), 0 8px 10px -6px rgba(99, 102, 241, 0.2);
+  }
+}
+
+.card-shadow-pulse:hover {
+  animation: shadowPulse 2s ease-in-out infinite;
+}
+
+/* Gradient border animation */
+@keyframes borderGradient {
+  0% { border-color: #6366f1; }
+  33% { border-color: #a855f7; }
+  66% { border-color: #ec4899; }
+  100% { border-color: #6366f1; }
+}
+
+.animate-border-gradient {
+  animation: borderGradient 3s linear infinite;
+}
+
+/* Subtle float animation */
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.animate-subtle-float {
+  animation: subtleFloat 3s ease-in-out infinite;
+}
