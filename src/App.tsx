@@ -32,6 +32,14 @@ function App() {
       if (e.key === '1') setCurrentView('today');
       if (e.key === '2') setCurrentView('calendar');
       if (e.key === '3') setCurrentView('report');
+      // Quick add shortcut - 'n' for new task
+      if (e.key === 'n' || e.key === 'N') {
+        setCurrentView('today');
+        setTimeout(() => {
+          const input = document.querySelector('input[placeholder*="Enter your task"]') as HTMLInputElement;
+          if (input) input.focus();
+        }, 100);
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -212,6 +220,10 @@ function App() {
               Press <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">1</kbd>
               <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">2</kbd>
               <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">3</kbd> to navigate
+            </span>
+            <span className="text-gray-300">|</span>
+            <span className="flex items-center gap-1">
+              <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">N</kbd> new task
             </span>
           </div>
           <p className="text-xs text-gray-400">Made with ❤️ for productivity lovers</p>
