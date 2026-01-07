@@ -1,3 +1,17 @@
+/*
+ * TaskFlow v2.5.0 - Beautiful Task Manager
+ * Modern glassmorphism UI with delightful animations
+ *
+ * Features:
+ * - Smooth transitions and micro-animations
+ * - Glassmorphism design with gradients
+ * - Time-based greetings and motivational quotes
+ * - Streak tracking and progress visualization
+ * - Keyboard shortcuts (1,2,3 for navigation, N for new task)
+ * - Accessibility support (reduced motion, high contrast)
+ * - Responsive design for mobile and desktop
+ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
