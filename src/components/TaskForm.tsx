@@ -65,7 +65,7 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white/90 backdrop-blur-sm p-6 rounded-3xl shadow-xl border-2 border-transparent bg-gradient-to-r from-white via-white to-white relative before:absolute before:inset-0 before:rounded-3xl before:p-[2px] before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 before:-z-10 before:animate-gradient">
+    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-3xl shadow-xl border-2 border-indigo-200">
       <div>
         <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
           What needs to be done?
@@ -76,16 +76,16 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="✨ Enter your task..."
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 ${
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 text-gray-800 ${
             errors.title
-              ? 'border-red-400 bg-red-50 animate-shake'
-              : 'border-gray-200 focus:border-indigo-400 focus:shadow-lg focus:shadow-indigo-100 bg-gray-50/50'
+              ? 'border-red-400 bg-red-50'
+              : 'border-gray-300 focus:border-indigo-500 bg-gray-50'
           }`}
           maxLength={TITLE_MAX_LENGTH}
         />
         <div className="flex justify-between mt-1.5">
           {errors.title && <span className="text-red-500 text-xs font-medium">{errors.title}</span>}
-          <span className="text-gray-400 text-xs ml-auto">{title.length}/{TITLE_MAX_LENGTH}</span>
+          <span className="text-gray-500 text-xs ml-auto">{title.length}/{TITLE_MAX_LENGTH}</span>
         </div>
       </div>
 
@@ -99,16 +99,16 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
           onChange={(e) => setNotes(e.target.value)}
           placeholder="📝 Add some details..."
           rows={2}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 resize-none ${
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 resize-none text-gray-800 ${
             errors.notes
-              ? 'border-red-400 bg-red-50 animate-shake'
-              : 'border-gray-200 focus:border-indigo-400 focus:shadow-lg focus:shadow-indigo-100 bg-gray-50/50'
+              ? 'border-red-400 bg-red-50'
+              : 'border-gray-300 focus:border-indigo-500 bg-gray-50'
           }`}
           maxLength={NOTES_MAX_LENGTH}
         />
         <div className="flex justify-between mt-1.5">
           {errors.notes && <span className="text-red-500 text-xs font-medium">{errors.notes}</span>}
-          <span className="text-gray-400 text-xs ml-auto">{notes.length}/{NOTES_MAX_LENGTH}</span>
+          <span className="text-gray-500 text-xs ml-auto">{notes.length}/{NOTES_MAX_LENGTH}</span>
         </div>
       </div>
 
@@ -121,7 +121,7 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
             id="priority"
             value={priority}
             onChange={(e) => setPriority(e.target.value as Priority | '')}
-            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 bg-gray-50/50 text-sm transition-colors"
+            className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 bg-gray-50 text-sm text-gray-800 transition-colors"
           >
             <option value="">⚪ None</option>
             <option value="low">🟢 Low</option>
@@ -131,7 +131,7 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
         </div>
 
         <div>
-          <label htmlFor="date" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+          <label htmlFor="date" className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
             Date
           </label>
           <input
@@ -139,7 +139,7 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
             id="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 bg-gray-50/50 text-sm transition-colors"
+            className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 bg-gray-50 text-sm text-gray-800 transition-colors"
           />
         </div>
 

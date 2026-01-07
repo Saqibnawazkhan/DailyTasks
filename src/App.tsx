@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactNode, useMemo, useEffect, useRef } from 'react';
+import { useState, useCallback, ReactNode, useMemo, useEffect } from 'react';
 import { useTasks } from './hooks/useTasks';
 import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
@@ -137,37 +137,36 @@ function App() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/50 sticky top-0 z-30">
+      <header className="bg-white shadow-md border-b border-gray-200 sticky top-0 z-30">
         <div className="max-w-5xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform animate-gradient" onClick={() => setCurrentView('today')}>
+              <h1 className="text-xl font-bold text-indigo-600 flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform" onClick={() => setCurrentView('today')}>
                 <div className="relative">
-                  <svg className="w-7 h-7 text-indigo-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                  <div className="absolute inset-0 bg-indigo-400 blur-lg opacity-30 animate-pulse"></div>
                 </div>
                 TaskFlow
               </h1>
               {tasks.length > 0 && (
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
-                  <span className="text-sm text-gray-600">{tasks.filter(t => t.completed).length}/{tasks.length}</span>
-                  <span className="text-xs text-indigo-500 font-medium">done</span>
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-indigo-50 rounded-xl border border-indigo-200">
+                  <span className="text-sm text-gray-700 font-medium">{tasks.filter(t => t.completed).length}/{tasks.length}</span>
+                  <span className="text-xs text-indigo-600 font-medium">done</span>
                 </div>
               )}
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden sm:flex gap-1 bg-gray-100/80 p-1.5 rounded-2xl">
+            <nav className="hidden sm:flex gap-1 bg-gray-100 p-1.5 rounded-2xl">
               {navItems.map(item => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id)}
                   className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 ${
                     currentView === item.id
-                      ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-200'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+                      ? 'bg-indigo-600 text-white shadow-lg'
+                      : 'text-gray-700 hover:text-gray-900 hover:bg-white'
                   }`}
                 >
                   <span className={`transition-transform duration-300 ${currentView === item.id ? 'scale-110' : ''}`}>
@@ -175,8 +174,8 @@ function App() {
                   </span>
                   <span className="font-medium">{item.label}</span>
                   {item.id === 'today' && todayTaskCount > 0 && (
-                    <span className={`ml-1 px-1.5 py-0.5 text-xs font-bold rounded-full min-w-[20px] text-center animate-pulse ${
-                      currentView === item.id ? 'bg-white/20 text-white' : 'bg-rose-500 text-white'
+                    <span className={`ml-1 px-1.5 py-0.5 text-xs font-bold rounded-full min-w-[20px] text-center ${
+                      currentView === item.id ? 'bg-white text-indigo-600' : 'bg-rose-500 text-white'
                     }`}>
                       {todayTaskCount > 9 ? '9+' : todayTaskCount}
                     </span>
@@ -232,23 +231,23 @@ function App() {
 
       {/* Footer */}
       <footer className="hidden sm:block max-w-5xl mx-auto px-4 pb-6 relative z-10">
-        <div className="text-center text-sm text-gray-400 pt-8 border-t border-gray-200/50">
+        <div className="text-center text-sm text-gray-500 pt-8 border-t border-gray-200">
           <div className="flex items-center justify-center gap-6 mb-2">
-            <span className="flex items-center gap-2 hover:text-indigo-500 transition-colors cursor-default">
-              <span className="text-lg">⚡</span> TaskFlow v2.0
+            <span className="flex items-center gap-2 hover:text-indigo-600 transition-colors cursor-default">
+              <span className="text-lg">⚡</span> TaskFlow v2.5
             </span>
             <span className="text-gray-300">|</span>
-            <span className="flex items-center gap-1">
-              Press <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">1</kbd>
-              <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">2</kbd>
-              <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">3</kbd> to navigate
+            <span className="flex items-center gap-1 text-gray-600">
+              Press <kbd className="px-2 py-1 bg-white rounded-lg text-indigo-600 font-mono text-xs shadow-sm border border-gray-200">1</kbd>
+              <kbd className="px-2 py-1 bg-white rounded-lg text-indigo-600 font-mono text-xs shadow-sm border border-gray-200">2</kbd>
+              <kbd className="px-2 py-1 bg-white rounded-lg text-indigo-600 font-mono text-xs shadow-sm border border-gray-200">3</kbd> to navigate
             </span>
             <span className="text-gray-300">|</span>
-            <span className="flex items-center gap-1">
-              <kbd className="px-2 py-1 bg-white/80 rounded-lg text-indigo-600 font-mono text-xs shadow-sm border">N</kbd> new task
+            <span className="flex items-center gap-1 text-gray-600">
+              <kbd className="px-2 py-1 bg-white rounded-lg text-indigo-600 font-mono text-xs shadow-sm border border-gray-200">N</kbd> new task
             </span>
           </div>
-          <p className="text-xs text-gray-400">Made with ❤️ for productivity lovers</p>
+          <p className="text-xs text-gray-500">Made with ❤️ for productivity lovers</p>
         </div>
       </footer>
 
@@ -266,7 +265,7 @@ function App() {
       )}
 
       {/* Mobile Navigation */}
-      <nav className="sm:hidden fixed bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl border border-white/50 rounded-3xl shadow-2xl shadow-gray-200/50 z-30">
+      <nav className="sm:hidden fixed bottom-4 left-4 right-4 bg-white border border-gray-200 rounded-3xl shadow-xl z-30">
         <div className="flex justify-around py-3 px-2">
           {navItems.map(item => (
             <button
@@ -274,8 +273,8 @@ function App() {
               onClick={() => setCurrentView(item.id)}
               className={`relative flex flex-col items-center gap-1 py-2 px-5 rounded-2xl transition-all duration-300 ${
                 currentView === item.id
-                  ? 'text-white bg-gradient-to-r from-indigo-500 to-purple-500 shadow-lg shadow-indigo-200 scale-105'
-                  : 'text-gray-500 hover:text-gray-700 active:scale-95'
+                  ? 'text-white bg-indigo-600 shadow-lg scale-105'
+                  : 'text-gray-600 hover:text-gray-800 active:scale-95'
               }`}
             >
               <span className={`transition-transform duration-300 ${currentView === item.id ? 'scale-110' : ''}`}>
@@ -283,7 +282,7 @@ function App() {
               </span>
               <span className="text-xs font-semibold">{item.label}</span>
               {item.id === 'today' && todayTaskCount > 0 && (
-                <span className={`absolute -top-1 -right-1 w-5 h-5 text-xs font-bold rounded-full flex items-center justify-center animate-bounce ${
+                <span className={`absolute -top-1 -right-1 w-5 h-5 text-xs font-bold rounded-full flex items-center justify-center ${
                   currentView === item.id ? 'bg-white text-indigo-600' : 'bg-rose-500 text-white'
                 }`}>
                   {todayTaskCount > 9 ? '9+' : todayTaskCount}

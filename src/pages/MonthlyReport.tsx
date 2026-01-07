@@ -77,12 +77,12 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
     return (
       <div className="space-y-6">
         {/* Month Selector */}
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
-          <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Select Month</label>
+        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200">
+          <label className="block text-sm font-bold text-gray-600 uppercase tracking-wider mb-3">Select Month</label>
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
-            className="w-full sm:w-64 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 transition-colors"
+            className="w-full sm:w-64 px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 text-gray-800 bg-gray-50 transition-colors"
           >
             {months.map(({ value, label }) => (
               <option key={value} value={value}>{label}</option>
@@ -91,14 +91,14 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
         </div>
 
         {/* Empty State */}
-        <div className="text-center py-16 bg-white/40 rounded-2xl border-2 border-dashed border-gray-200">
-          <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-indigo-300">
+          <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
-          <p className="text-gray-500 font-medium mb-1">No tasks for this month</p>
-          <p className="text-gray-400 text-sm">Try selecting a different month</p>
+          <p className="text-gray-800 font-medium mb-1">No tasks for this month</p>
+          <p className="text-gray-600 text-sm">Try selecting a different month</p>
         </div>
       </div>
     );
@@ -107,12 +107,12 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
   return (
     <div className="space-y-6">
       {/* Month Selector */}
-      <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
-        <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Select Month</label>
+      <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200">
+        <label className="block text-sm font-bold text-gray-600 uppercase tracking-wider mb-3">Select Month</label>
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
-          className="w-full sm:w-64 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 transition-colors"
+          className="w-full sm:w-64 px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 text-gray-800 bg-gray-50 transition-colors"
         >
           {months.map(({ value, label }) => (
             <option key={value} value={value}>{label}</option>
@@ -122,40 +122,40 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
+        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mb-3">
             <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
-          <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Tasks</p>
+          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Total Tasks</p>
           <p className="text-3xl font-bold text-gray-900 mt-1">{report.stats.total}</p>
         </div>
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
+        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mb-3">
             <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Completed</p>
+          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Completed</p>
           <p className="text-3xl font-bold text-emerald-600 mt-1">{report.stats.completed}</p>
         </div>
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
+        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center mb-3">
             <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Incomplete</p>
+          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Incomplete</p>
           <p className="text-3xl font-bold text-rose-600 mt-1">{report.stats.incomplete}</p>
         </div>
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
+        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
             <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
           </div>
-          <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Rate</p>
+          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Rate</p>
           <p className={`text-3xl font-bold mt-1 ${color}`}>{report.stats.completionPercentage}%</p>
           <p className={`text-xs font-medium ${color}`}>{grade}</p>
         </div>
@@ -178,9 +178,9 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
       )}
 
       {/* Completion Progress Bar */}
-      <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+      <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200">
         <div className="flex justify-between text-sm mb-3">
-          <span className="font-bold text-gray-700">Overall Progress</span>
+          <span className="font-bold text-gray-800">Overall Progress</span>
           <span className="font-bold text-indigo-600">{report.stats.completionPercentage}%</span>
         </div>
         <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
@@ -197,7 +197,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
       </div>
 
       {/* Priority Breakdown */}
-      <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+      <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Priority Breakdown</h3>
         <div className="grid grid-cols-3 gap-4">
           {(['high', 'medium', 'low'] as const).map(priority => {
@@ -218,7 +218,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
       </div>
 
       {/* Daily Breakdown */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
         <div className="p-5 border-b border-gray-100">
           <h3 className="text-lg font-bold text-gray-900">Daily Breakdown</h3>
         </div>
@@ -258,15 +258,15 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
       </div>
 
       {/* Filters */}
-      <div className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/50">
+      <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Filter Tasks</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Status</label>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Status</label>
             <select
               value={filterCompletion}
               onChange={(e) => setFilterCompletion(e.target.value as FilterCompletion)}
-              className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 transition-colors text-sm"
+              className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 text-gray-800 bg-gray-50 transition-colors text-sm"
             >
               <option value="all">All Tasks</option>
               <option value="incomplete">Incomplete</option>
@@ -274,11 +274,11 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Priority</label>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Priority</label>
             <select
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value as FilterPriority)}
-              className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 transition-colors text-sm"
+              className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 text-gray-800 bg-gray-50 transition-colors text-sm"
             >
               <option value="all">All Priorities</option>
               <option value="high">High</option>
@@ -287,11 +287,11 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Tag</label>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Tag</label>
             <select
               value={selectedTag}
               onChange={(e) => setSelectedTag(e.target.value)}
-              className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 transition-colors text-sm"
+              className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 text-gray-800 bg-gray-50 transition-colors text-sm"
             >
               <option value="all">All Tags</option>
               {availableTags.map(tag => (
@@ -303,7 +303,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
       </div>
 
       {/* Filtered Task List */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
         <div className="p-5 border-b border-gray-100 flex items-center justify-between">
           <h3 className="text-lg font-bold text-gray-900">
             {filterCompletion === 'incomplete' ? 'Incomplete Tasks' :

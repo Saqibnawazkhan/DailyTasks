@@ -22,20 +22,20 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
 
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-16 bg-white/60 backdrop-blur-sm rounded-3xl border-2 border-dashed border-indigo-200 hover:border-indigo-400 transition-all duration-500 hover:shadow-lg hover:shadow-indigo-100/50 group">
-        <div className="w-24 h-24 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 rounded-3xl flex items-center justify-center mx-auto mb-6 animate-bounce group-hover:animate-wobble">
+      <div className="text-center py-16 bg-white rounded-3xl border-2 border-dashed border-indigo-300 hover:border-indigo-400 transition-all duration-500 hover:shadow-lg group">
+        <div className="w-24 h-24 bg-indigo-100 rounded-3xl flex items-center justify-center mx-auto mb-6 animate-bounce group-hover:animate-wobble">
           <span className="text-5xl">📝</span>
         </div>
-        <p className="text-gray-700 font-bold text-xl mb-2">{emptyMessage}</p>
-        <p className="text-gray-500 mb-4">Your productivity journey starts here!</p>
-        <div className="max-w-md mx-auto px-6 py-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl mb-4">
-          <p className="text-indigo-700 italic text-sm">"{randomQuote.quote}"</p>
-          <p className="text-indigo-500 text-xs mt-1 font-medium">— {randomQuote.author}</p>
+        <p className="text-gray-800 font-bold text-xl mb-2">{emptyMessage}</p>
+        <p className="text-gray-600 mb-4">Your productivity journey starts here!</p>
+        <div className="max-w-md mx-auto px-6 py-4 bg-indigo-50 rounded-2xl mb-4 border border-indigo-200">
+          <p className="text-indigo-800 italic text-sm">"{randomQuote.quote}"</p>
+          <p className="text-indigo-600 text-xs mt-1 font-medium">— {randomQuote.author}</p>
         </div>
-        <div className="flex justify-center gap-2 text-sm text-gray-400">
-          <span className="px-3 py-1 bg-gray-100 rounded-full">✨ Stay organized</span>
-          <span className="px-3 py-1 bg-gray-100 rounded-full">🎯 Track progress</span>
-          <span className="px-3 py-1 bg-gray-100 rounded-full">🚀 Get things done</span>
+        <div className="flex justify-center gap-2 text-sm text-gray-600">
+          <span className="px-3 py-1 bg-gray-100 rounded-full border border-gray-200">✨ Stay organized</span>
+          <span className="px-3 py-1 bg-gray-100 rounded-full border border-gray-200">🎯 Track progress</span>
+          <span className="px-3 py-1 bg-gray-100 rounded-full border border-gray-200">🚀 Get things done</span>
         </div>
       </div>
     );

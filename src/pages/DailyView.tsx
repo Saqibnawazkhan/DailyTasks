@@ -54,12 +54,12 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
     <div className="space-y-6">
       {/* Greeting Banner - only show for today */}
       {isToday && (
-        <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-2xl shadow-lg text-white animate-fade-in">
+        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-4 rounded-2xl shadow-lg text-white animate-fade-in">
           <div className="flex items-center gap-3">
             <span className="text-3xl">{greeting.emoji}</span>
             <div>
-              <p className="text-lg font-bold">{greeting.text}!</p>
-              <p className="text-sm text-white/80">
+              <p className="text-lg font-bold text-white">{greeting.text}!</p>
+              <p className="text-sm text-white">
                 {dayTasks.length === 0 ? 'Ready to be productive?' :
                  progress === 100 ? 'All tasks completed! Amazing!' :
                  `You have ${dayTasks.length - completedCount} task${dayTasks.length - completedCount !== 1 ? 's' : ''} remaining`}
@@ -70,7 +70,7 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
       )}
 
       {/* Date Navigation Card */}
-      <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white/50">
+      <div className="bg-white p-4 rounded-2xl shadow-lg border border-gray-200">
         <div className="flex items-center justify-between">
           <button
             onClick={goToPrevDay}
@@ -84,10 +84,10 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
 
           <div className="flex items-center gap-3">
             <div className="text-center min-w-[140px]">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <h2 className="text-2xl font-bold text-gray-800">
                 {formatDisplayDate(selectedDate)}
               </h2>
-              <p className="text-sm text-gray-500 mt-1 font-medium">
+              <p className="text-sm text-gray-600 mt-1 font-medium">
                 {isToday ? '🌟 ' : ''}{new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' })}
               </p>
             </div>
@@ -158,8 +158,8 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
 
       {/* Progress Stats */}
       {dayTasks.length > 0 && (
-        <div className={`bg-white/80 backdrop-blur-sm p-6 rounded-3xl shadow-lg border-2 transition-all duration-500 ${
-          progress === 100 ? 'border-emerald-200 bg-gradient-to-br from-white to-emerald-50' : 'border-white/50'
+        <div className={`bg-white p-6 rounded-3xl shadow-lg border-2 transition-all duration-500 ${
+          progress === 100 ? 'border-emerald-300 bg-emerald-50' : 'border-gray-200'
         }`}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">

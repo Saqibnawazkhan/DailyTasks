@@ -69,7 +69,7 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
   return (
     <div className="space-y-6">
       {/* Month Navigation */}
-      <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white/50">
+      <div className="bg-white p-4 rounded-2xl shadow-lg border border-gray-200">
         <div className="flex items-center justify-between">
           <button
             onClick={goToPrevMonth}
@@ -82,10 +82,10 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
           </button>
 
           <div className="flex items-center gap-4">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">{monthLabel}</h2>
+            <h2 className="text-xl font-bold text-gray-800">{monthLabel}</h2>
             <button
               onClick={goToCurrentMonth}
-              className="btn-ripple px-4 py-2 text-sm bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
+              className="btn-ripple px-4 py-2 text-sm bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
             >
               📅 Today
             </button>
@@ -104,11 +104,11 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
       </div>
 
       {/* Calendar Grid */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
         {/* Week days header */}
-        <div className="grid grid-cols-7 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-100">
+        <div className="grid grid-cols-7 bg-indigo-50 border-b border-gray-200">
           {weekDays.map((day, index) => (
-            <div key={index} className="py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider" title={weekDaysFull[index]}>
+            <div key={index} className="py-3 text-center text-xs font-bold text-gray-600 uppercase tracking-wider" title={weekDaysFull[index]}>
               {day}
             </div>
           ))}
@@ -182,7 +182,7 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
       </div>
 
       {/* Legend */}
-      <div className="bg-white/60 backdrop-blur-sm py-4 px-6 rounded-2xl border border-white/50">
+      <div className="bg-white py-4 px-6 rounded-2xl border border-gray-200">
         <div className="flex justify-center gap-6 text-sm">
           <div className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-emerald-50 transition-all duration-300 cursor-default group">
             <div className="w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full group-hover:scale-125 transition-transform"></div>
