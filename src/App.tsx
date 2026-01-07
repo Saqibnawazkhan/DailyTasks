@@ -54,6 +54,15 @@ function App() {
     return tasks.filter(t => t.date === today && !t.completed).length;
   }, [tasks]);
 
+  // Update page title with task count
+  useEffect(() => {
+    if (todayTaskCount > 0) {
+      document.title = `(${todayTaskCount}) TaskFlow - Beautiful Task Manager`;
+    } else {
+      document.title = 'TaskFlow - Beautiful Task Manager';
+    }
+  }, [todayTaskCount]);
+
   // Show loading screen with fun animation
   if (!isLoaded) {
     return (
