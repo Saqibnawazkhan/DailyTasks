@@ -1,9 +1,10 @@
-import { useState, useCallback, ReactNode, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useTasks } from './hooks/useTasks';
 import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
 import { MonthlyReport } from './pages/MonthlyReport';
 import { getToday } from './utils/date';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X } from 'lucide-react';
 
 type View = 'today' | 'calendar' | 'report';
 
@@ -81,9 +82,7 @@ function App() {
           <div className="relative w-20 h-20 mx-auto mb-6">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl animate-spin-slow"></div>
             <div className="absolute inset-2 bg-white rounded-xl flex items-center justify-center">
-              <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+              <Zap className="w-8 h-8 text-indigo-600" />
             </div>
           </div>
           <p className="text-gray-600 font-medium text-lg">Loading TaskFlow</p>
@@ -98,34 +97,10 @@ function App() {
     );
   }
 
-  const navItems: { id: View; label: string; icon: ReactNode }[] = [
-    {
-      id: 'today',
-      label: 'Tasks',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      )
-    },
-    {
-      id: 'calendar',
-      label: 'Calendar',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-      )
-    },
-    {
-      id: 'report',
-      label: 'Stats',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-      )
-    }
+  const navItems: { id: View; label: string; icon: React.ReactNode }[] = [
+    { id: 'today', label: 'Tasks', icon: <CheckCircle className="w-5 h-5" /> },
+    { id: 'calendar', label: 'Calendar', icon: <Calendar className="w-5 h-5" /> },
+    { id: 'report', label: 'Stats', icon: <BarChart3 className="w-5 h-5" /> }
   ];
 
   return (
@@ -142,11 +117,7 @@ function App() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <h1 className="text-xl font-bold text-indigo-600 flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform" onClick={() => setCurrentView('today')}>
-                <div className="relative">
-                  <svg className="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
+                <Zap className="w-7 h-7 text-indigo-600" />
                 TaskFlow
               </h1>
               {tasks.length > 0 && (
@@ -192,13 +163,11 @@ function App() {
         <div className="mx-4 mt-4 animate-slide-in-right">
           <div className="max-w-5xl mx-auto bg-gradient-to-r from-rose-50 to-red-50 border border-rose-200 rounded-2xl px-5 py-4 flex items-center gap-4 shadow-lg shadow-rose-100/50">
             <div className="w-10 h-10 bg-gradient-to-br from-rose-100 to-red-100 rounded-xl flex items-center justify-center flex-shrink-0 animate-shake">
-              <span className="text-xl">⚠️</span>
+              <AlertTriangle className="w-5 h-5 text-rose-600" />
             </div>
             <p className="text-sm text-rose-700 flex-1 font-medium">{error}</p>
             <button onClick={clearError} className="p-2 hover:bg-rose-100 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95">
-              <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-5 h-5 text-rose-500" />
             </button>
           </div>
         </div>
@@ -234,7 +203,7 @@ function App() {
         <div className="text-center text-sm text-gray-500 pt-8 border-t border-gray-200">
           <div className="flex items-center justify-center gap-6 mb-2">
             <span className="flex items-center gap-2 hover:text-indigo-600 transition-colors cursor-default">
-              <span className="text-lg">⚡</span> TaskFlow v2.5
+              <Zap className="w-4 h-4" /> TaskFlow v2.5
             </span>
             <span className="text-gray-300">|</span>
             <span className="flex items-center gap-1 text-gray-600">
@@ -258,9 +227,7 @@ function App() {
           className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 z-40 w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full shadow-lg shadow-indigo-200 hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce-once flex items-center justify-center"
           aria-label="Scroll to top"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-          </svg>
+          <ChevronUp className="w-6 h-6" />
         </button>
       )}
 

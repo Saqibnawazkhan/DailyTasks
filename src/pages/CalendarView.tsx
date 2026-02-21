@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Task } from '../types/task';
 import { getToday } from '../utils/date';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CalendarViewProps {
   tasks: Task[];
@@ -76,9 +77,7 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
             className="p-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 active:scale-90"
             aria-label="Previous month"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft className="w-6 h-6" />
           </button>
 
           <div className="flex items-center gap-4">
@@ -96,9 +95,7 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
             className="p-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 active:scale-90"
             aria-label="Next month"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <ChevronRight className="w-6 h-6" />
           </button>
         </div>
       </div>

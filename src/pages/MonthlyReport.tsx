@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Task, Priority } from '../types/task';
 import { generateMonthlyReport, getCompletionGrade } from '../utils/report';
 import { formatMonthYear, formatDisplayDate, getMonthsList } from '../utils/date';
+import { ClipboardList, CheckCircle, Clock, TrendingUp, BarChart3 } from 'lucide-react';
 
 interface MonthlyReportProps {
   tasks: Task[];
@@ -93,9 +94,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
         {/* Empty State */}
         <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-indigo-300">
           <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
+            <BarChart3 className="w-8 h-8 text-indigo-600" />
           </div>
           <p className="text-gray-800 font-medium mb-1">No tasks for this month</p>
           <p className="text-gray-600 text-sm">Try selecting a different month</p>
@@ -124,36 +123,28 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mb-3">
-            <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
+            <ClipboardList className="w-5 h-5 text-indigo-600" />
           </div>
           <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Total Tasks</p>
           <p className="text-3xl font-bold text-gray-900 mt-1">{report.stats.total}</p>
         </div>
         <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mb-3">
-            <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <CheckCircle className="w-5 h-5 text-emerald-600" />
           </div>
           <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Completed</p>
           <p className="text-3xl font-bold text-emerald-600 mt-1">{report.stats.completed}</p>
         </div>
         <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center mb-3">
-            <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <Clock className="w-5 h-5 text-rose-600" />
           </div>
           <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Incomplete</p>
           <p className="text-3xl font-bold text-rose-600 mt-1">{report.stats.incomplete}</p>
         </div>
         <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
-            <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
+            <TrendingUp className="w-5 h-5 text-purple-600" />
           </div>
           <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Rate</p>
           <p className={`text-3xl font-bold mt-1 ${color}`}>{report.stats.completionPercentage}%</p>

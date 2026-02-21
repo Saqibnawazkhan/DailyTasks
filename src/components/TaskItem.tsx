@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Task, TaskFormData } from '../types/task';
 import { TaskForm } from './TaskForm';
+import { Check, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 
 interface TaskItemProps {
   task: Task;
@@ -69,9 +70,7 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
           aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
         >
           {task.completed && (
-            <svg className="w-3.5 h-3.5 animate-bounce-once" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-            </svg>
+            <Check className="w-3.5 h-3.5 animate-bounce-once" strokeWidth={3} />
           )}
         </button>
         {task.completed && (
@@ -123,11 +122,7 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
           aria-label="Task options"
           title="More options"
         >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="6" r="1.5" />
-            <circle cx="12" cy="12" r="1.5" />
-            <circle cx="12" cy="18" r="1.5" />
-          </svg>
+          <MoreVertical className="w-5 h-5" />
         </button>
 
         {showMenu && (
@@ -141,10 +136,8 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
                 }}
                 className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                ✏️ Edit
+                <Pencil className="w-4 h-4" />
+                Edit
               </button>
               <button
                 onClick={() => {
@@ -153,10 +146,8 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
                 }}
                 className="w-full flex items-center gap-3 px-4 py-3 text-sm text-rose-600 hover:bg-rose-50 transition-all duration-200"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-                🗑️ Delete
+                <Trash2 className="w-4 h-4" />
+                Delete
               </button>
             </div>
           </>
@@ -168,9 +159,7 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md animate-fade-in">
           <div className="bg-white rounded-3xl p-8 max-w-sm mx-4 shadow-2xl animate-bounce-once">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-100 to-red-100 flex items-center justify-center mx-auto mb-5">
-              <svg className="w-8 h-8 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
+              <Trash2 className="w-8 h-8 text-rose-600" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 text-center mb-2">Delete Task?</h3>
             <p className="text-gray-500 text-center mb-6 text-sm">

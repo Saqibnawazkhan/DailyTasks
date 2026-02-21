@@ -5,13 +5,20 @@
   "type": "module",
   "description": "A simple and beautiful task manager with modern glassmorphism UI",
   "author": "TaskFlow Team",
-  "keywords": ["task", "manager", "productivity", "react", "typescript"],
+  "keywords": [
+    "task",
+    "manager",
+    "productivity",
+    "react",
+    "typescript"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "lucide-react": "^0.575.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "uuid": "^13.0.0"
