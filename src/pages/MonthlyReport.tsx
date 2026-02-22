@@ -3,7 +3,7 @@ import { Task, Priority } from '../types/task';
 import { generateMonthlyReport, getCompletionGrade } from '../utils/report';
 import { formatMonthYear, formatDisplayDate, getMonthsList } from '../utils/date';
 import { ClipboardList, CheckCircle, Clock, TrendingUp, BarChart3 } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend, AreaChart, Area } from 'recharts';
 
 interface MonthlyReportProps {
   tasks: Task[];
@@ -231,6 +231,30 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
             <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-indigo-500 inline-block" /> Completed</span>
             <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-gray-200 inline-block" /> Pending</span>
           </div>
+        </div>
+      )}
+
+      {/* Completion Rate Trend (Area Chart) */}
+      {report.dailyBreakdown.length > 1 && (
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-5">
+          <h3 className="text-base font-bold text-gray-900 dark:text-white mb-4">Completion Rate Trend</h3>
+          <ResponsiveContainer width="100%" height={160}>
+            <AreaChart data={report.dailyBreakdown.map(d => ({ day: d.date.slice(8), rate: d.total > 0 ? Math.round((d.completed / d.total) * 100) : 0 }))}>
+              <defs>
+                <linearGradient id="rateGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+              <YAxis hide domain={[0, 100]} />
+              <Tooltip
+                contentStyle={{ background: '#1f2937', border: 'none', borderRadius: 12, fontSize: 12, color: '#f9fafb' }}
+                formatter={(v: number) => [`${v}%`, 'Completion']}
+              />
+              <Area type="monotone" dataKey="rate" stroke="#6366f1" strokeWidth={2} fill="url(#rateGrad)" dot={false} />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
       )}
 
