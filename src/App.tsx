@@ -97,35 +97,39 @@ function App() {
     }
   }, [todayTaskCount]);
 
-  // Fun loading messages
-  const loadingMessages = [
-    "Brewing productivity magic...",
-    "Gathering your tasks...",
-    "Preparing your workspace...",
-    "Loading awesome features...",
-    "Almost there...",
-  ];
-  const randomLoadingMsg = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
-
-  // Show loading screen with fun animation
+  // Show loading screen
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-        <div className="text-center">
-          <div className="relative w-20 h-20 mx-auto mb-6">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl animate-spin-slow"></div>
-            <div className="absolute inset-2 bg-white rounded-xl flex items-center justify-center">
-              <Zap className="w-8 h-8 text-indigo-600" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-950">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+          className="text-center"
+        >
+          <div className="relative w-24 h-24 mx-auto mb-8">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+              className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500"
+            />
+            <div className="absolute inset-1.5 bg-gray-950 rounded-2xl flex items-center justify-center">
+              <Zap className="w-10 h-10 text-indigo-400" />
             </div>
           </div>
-          <p className="text-gray-600 font-medium text-lg">Loading TaskFlow</p>
-          <p className="text-gray-400 text-sm mt-1">{randomLoadingMsg}</p>
-          <div className="flex justify-center gap-1 mt-3">
-            <span className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-            <span className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-            <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+          <h1 className="text-2xl font-bold text-white mb-2">TaskFlow</h1>
+          <p className="text-gray-500 text-sm">Loading your workspace…</p>
+          <div className="flex justify-center gap-1.5 mt-6">
+            {[0, 1, 2].map(i => (
+              <motion.span
+                key={i}
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+                className="w-2 h-2 bg-indigo-500 rounded-full inline-block"
+              />
+            ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
