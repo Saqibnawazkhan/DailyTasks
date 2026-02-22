@@ -3,6 +3,7 @@ import { Task, Priority } from '../types/task';
 import { generateMonthlyReport, getCompletionGrade } from '../utils/report';
 import { formatMonthYear, formatDisplayDate, getMonthsList } from '../utils/date';
 import { ClipboardList, CheckCircle, Clock, TrendingUp, BarChart3 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface MonthlyReportProps {
   tasks: Task[];
@@ -207,6 +208,31 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
           })}
         </div>
       </div>
+
+      {/* Bar Chart */}
+      {report.dailyBreakdown.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-5">
+          <h3 className="text-base font-bold text-gray-900 dark:text-white mb-4">Daily Completion</h3>
+          <ResponsiveContainer width="100%" height={180}>
+            <BarChart data={report.dailyBreakdown.map(d => ({ day: d.date.slice(8), done: d.completed, pending: d.incomplete }))} barSize={8}>
+              <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+              <YAxis hide allowDecimals={false} />
+              <Tooltip
+                contentStyle={{ background: '#1f2937', border: 'none', borderRadius: 12, fontSize: 12, color: '#f9fafb' }}
+                cursor={{ fill: 'rgba(99,102,241,0.05)' }}
+              />
+              <Bar dataKey="done" name="Completed" radius={[4, 4, 0, 0]} fill="#6366f1" />
+              <Bar dataKey="pending" name="Pending" radius={[4, 4, 0, 0]}>
+                {report.dailyBreakdown.map((_, i) => <Cell key={i} fill="#e5e7eb" />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+          <div className="flex items-center gap-4 mt-2 justify-center text-xs text-gray-500">
+            <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-indigo-500 inline-block" /> Completed</span>
+            <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-gray-200 inline-block" /> Pending</span>
+          </div>
+        </div>
+      )}
 
       {/* Daily Breakdown */}
       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
