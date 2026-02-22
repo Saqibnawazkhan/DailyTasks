@@ -32,6 +32,11 @@ const priorityConfig = {
   high: { bg: 'bg-rose-50 dark:bg-rose-900/20', text: 'text-rose-700 dark:text-rose-400', border: 'border-rose-200 dark:border-rose-800', dot: 'bg-rose-500', label: 'High' }
 };
 
+const TASK_COLOR_HEX: Record<string, string> = {
+  red: '#f43f5e', orange: '#f97316', yellow: '#eab308', green: '#22c55e',
+  teal: '#14b8a6', blue: '#3b82f6', purple: '#a855f7', pink: '#ec4899',
+};
+
 export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -97,9 +102,12 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
           ? 'bg-gray-50 dark:bg-gray-800/40 border-gray-100 dark:border-gray-800 opacity-60'
           : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md'
       }`}
+      style={task.color && !task.completed && TASK_COLOR_HEX[task.color]
+        ? { borderLeftColor: TASK_COLOR_HEX[task.color], borderLeftWidth: 3 }
+        : undefined}
     >
-      {/* Priority stripe */}
-      {task.priority && !task.completed && (
+      {/* Color/Priority stripe */}
+      {!task.color && task.priority && !task.completed && (
         <div className={`absolute left-0 top-3 bottom-3 w-1 rounded-full ${priorityConfig[task.priority].dot}`} />
       )}
 

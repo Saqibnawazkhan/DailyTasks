@@ -2,7 +2,18 @@ import { useState, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Priority, TaskFormData } from '../types/task';
 import { getToday } from '../utils/date';
-import { Plus, X, Flag, Calendar, Tag, FileText } from 'lucide-react';
+import { Plus, X, Flag, Calendar, Tag, FileText, Palette } from 'lucide-react';
+
+const TASK_COLORS = [
+  { id: 'red',    hex: '#f43f5e' },
+  { id: 'orange', hex: '#f97316' },
+  { id: 'yellow', hex: '#eab308' },
+  { id: 'green',  hex: '#22c55e' },
+  { id: 'teal',   hex: '#14b8a6' },
+  { id: 'blue',   hex: '#3b82f6' },
+  { id: 'purple', hex: '#a855f7' },
+  { id: 'pink',   hex: '#ec4899' },
+];
 
 interface TaskFormProps {
   onSubmit: (data: TaskFormData) => void;
@@ -27,6 +38,7 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
   const [priority, setPriority] = useState<Priority | ''>(initialData?.priority || '');
   const [tags, setTags]         = useState(initialData?.tags?.join(', ') || '');
   const [date, setDate]         = useState(initialData?.date || getToday());
+  const [color, setColor]       = useState(initialData?.color || '');
   const [errors, setErrors]     = useState<{ title?: string }>({});
 
   const validate = () => {
@@ -40,8 +52,8 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
     e.preventDefault();
     if (!validate()) return;
     const tagList = tags.split(',').map(t => t.trim()).filter(Boolean);
-    onSubmit({ title: title.trim(), notes: notes.trim() || undefined, priority: priority || null, tags: tagList, date });
-    if (!initialData) { setTitle(''); setNotes(''); setPriority(''); setTags(''); setDate(getToday()); }
+    onSubmit({ title: title.trim(), notes: notes.trim() || undefined, priority: priority || null, tags: tagList, date, color: color || null });
+    if (!initialData) { setTitle(''); setNotes(''); setPriority(''); setTags(''); setDate(getToday()); setColor(''); }
   };
 
   return (
@@ -128,6 +140,29 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
             placeholder="tags, comma-separated"
             className="flex-1 text-xs bg-transparent text-gray-600 dark:text-gray-300 placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none min-w-0"
           />
+        </div>
+
+        {/* Color swatches */}
+        <div className="flex items-center gap-1.5">
+          <Palette className="w-3 h-3 text-gray-400" />
+          <div className="flex gap-1">
+            <button
+              type="button"
+              onClick={() => setColor('')}
+              title="No color"
+              className={`w-4 h-4 rounded-full border-2 bg-gray-200 dark:bg-gray-600 transition-all ${!color ? 'border-indigo-500 scale-125' : 'border-transparent'}`}
+            />
+            {TASK_COLORS.map(c => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setColor(c.id)}
+                title={c.id}
+                className={`w-4 h-4 rounded-full border-2 transition-all ${color === c.id ? 'border-indigo-500 scale-125' : 'border-transparent'}`}
+                style={{ backgroundColor: c.hex }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

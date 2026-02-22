@@ -18,6 +18,7 @@ export interface Task {
   completedAt?: string | null;
   updatedAt?: string | null;
   subtasks?: Subtask[];
+  color?: string | null;
 }
 
 export interface TaskFormData {
@@ -26,6 +27,7 @@ export interface TaskFormData {
   priority?: Priority | null;
   tags?: string[];
   date: string;
+  color?: string | null;
 }
 
 export interface MonthlyStats {

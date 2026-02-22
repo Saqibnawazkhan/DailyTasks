@@ -250,7 +250,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
               <YAxis hide domain={[0, 100]} />
               <Tooltip
                 contentStyle={{ background: '#1f2937', border: 'none', borderRadius: 12, fontSize: 12, color: '#f9fafb' }}
-                formatter={(v: number) => [`${v}%`, 'Completion']}
+                formatter={(v: number | undefined) => [`${v ?? 0}%`, 'Completion']}
               />
               <Area type="monotone" dataKey="rate" stroke="#6366f1" strokeWidth={2} fill="url(#rateGrad)" dot={false} />
             </AreaChart>
