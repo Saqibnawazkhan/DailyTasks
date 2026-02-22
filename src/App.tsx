@@ -6,10 +6,11 @@ import { CalendarView } from './pages/CalendarView';
 import { MonthlyReport } from './pages/MonthlyReport';
 import { KanbanView } from './pages/KanbanView';
 import { getToday } from './utils/date';
-import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload } from 'lucide-react';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload, Focus } from 'lucide-react';
 import { useThemeStore } from './store/themeStore';
 import { CommandPalette } from './components/CommandPalette';
 import { PomodoroTimer } from './components/PomodoroTimer';
+import { FocusMode } from './components/FocusMode';
 
 type View = 'today' | 'kanban' | 'calendar' | 'report';
 
@@ -18,6 +19,7 @@ function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [pomodoroOpen, setPomodoroOpen] = useState(false);
+  const [focusOpen, setFocusOpen] = useState(false);
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError, exportTasks, importTasks } = useTasks();
   const { theme, setTheme } = useThemeStore();
 
@@ -216,6 +218,14 @@ function App() {
             {currentView === 'today' ? 'My Tasks' : currentView === 'kanban' ? 'Board' : currentView === 'calendar' ? 'Calendar' : 'Statistics'}
           </h2>
           <div className="flex items-center gap-2">
+            {/* Focus mode toggle */}
+            <button
+              onClick={() => setFocusOpen(true)}
+              title="Focus Mode"
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:scale-110"
+            >
+              <Focus className="w-4 h-4" />
+            </button>
             {/* Pomodoro toggle */}
             <button
               onClick={() => setPomodoroOpen(v => !v)}
@@ -316,6 +326,11 @@ function App() {
           </button>
         ))}
       </nav>
+
+      {/* Focus Mode */}
+      <AnimatePresence>
+        {focusOpen && <FocusMode tasks={tasks} onClose={() => setFocusOpen(false)} onToggle={toggleTask} />}
+      </AnimatePresence>
 
       {/* Pomodoro Timer */}
       <AnimatePresence>
