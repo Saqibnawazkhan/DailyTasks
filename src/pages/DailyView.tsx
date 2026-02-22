@@ -4,7 +4,23 @@ import { TaskForm } from '../components/TaskForm';
 import { TaskList } from '../components/TaskList';
 import { SearchBar } from '../components/SearchBar';
 import { getToday, formatDisplayDate } from '../utils/date';
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, ArrowUpDown } from 'lucide-react';
+
+type SortOption = 'default' | 'priority' | 'title' | 'date';
+
+const PRIORITY_ORDER: Record<string, number> = { high: 0, medium: 1, low: 2 };
+
+function sortTasks(tasks: Task[], sort: SortOption): Task[] {
+  if (sort === 'default') return tasks;
+  return [...tasks].sort((a, b) => {
+    if (sort === 'priority') {
+      return (PRIORITY_ORDER[a.priority || 'low'] ?? 3) - (PRIORITY_ORDER[b.priority || 'low'] ?? 3);
+    }
+    if (sort === 'title') return a.title.localeCompare(b.title);
+    if (sort === 'date') return (a.date || '').localeCompare(b.date || '');
+    return 0;
+  });
+}
 
 // Get greeting based on time of day
 function getGreeting() {
@@ -28,14 +44,15 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
   const [selectedDate, setSelectedDate] = useState(getToday());
   const [showForm, setShowForm] = useState(true);
   const [search, setSearch] = useState('');
+  const [sort, setSort] = useState<SortOption>('default');
 
   const dayTasks = getTasksByDate(selectedDate);
-  const filteredTasks = useMemo(() =>
-    search.trim()
+  const filteredTasks = useMemo(() => {
+    const filtered = search.trim()
       ? dayTasks.filter(t => t.title.toLowerCase().includes(search.toLowerCase()) || t.notes?.toLowerCase().includes(search.toLowerCase()) || t.tags?.some(tag => tag.toLowerCase().includes(search.toLowerCase())))
-      : dayTasks,
-    [dayTasks, search]
-  );
+      : dayTasks;
+    return sortTasks(filtered, sort);
+  }, [dayTasks, search, sort]);
   const isToday = selectedDate === getToday();
   const completedCount = dayTasks.filter(t => t.completed).length;
   const progress = dayTasks.length > 0 ? Math.round((completedCount / dayTasks.length) * 100) : 0;
@@ -137,9 +154,26 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
         )}
       </div>
 
-      {/* Search */}
+      {/* Search + Sort */}
       {dayTasks.length > 0 && (
-        <SearchBar value={search} onChange={setSearch} placeholder="Search tasks… (⌘K)" />
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <SearchBar value={search} onChange={setSearch} placeholder="Search tasks… (⌘K)" />
+          </div>
+          <div className="relative">
+            <select
+              value={sort}
+              onChange={e => setSort(e.target.value as SortOption)}
+              className="h-full pl-8 pr-3 py-2 text-xs rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 appearance-none cursor-pointer"
+            >
+              <option value="default">Default</option>
+              <option value="priority">Priority</option>
+              <option value="title">A → Z</option>
+              <option value="date">Date</option>
+            </select>
+            <ArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+          </div>
+        </div>
       )}
 
       <TaskList
