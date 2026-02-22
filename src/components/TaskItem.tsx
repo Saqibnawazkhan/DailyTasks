@@ -3,7 +3,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Task, TaskFormData, Subtask } from '../types/task';
 import { TaskForm } from './TaskForm';
-import { Check, MoreVertical, Pencil, Trash2, Flag, Plus, ListChecks } from 'lucide-react';
+import { Check, MoreVertical, Pencil, Trash2, Flag, Plus, ListChecks, CalendarClock } from 'lucide-react';
+
+function getDateStatus(date: string): 'overdue' | 'today' | 'upcoming' | null {
+  const today = new Date().toISOString().split('T')[0];
+  if (date < today) return 'overdue';
+  if (date === today) return 'today';
+  if (date > today) return 'upcoming';
+  return null;
+}
+
+const dateStatusConfig = {
+  overdue:  { label: 'Overdue',  cls: 'bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800' },
+  today:    { label: 'Today',    cls: 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800' },
+  upcoming: { label: 'Upcoming', cls: 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700' },
+};
 
 interface TaskItemProps {
   task: Task;
@@ -120,7 +134,7 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
           </p>
         )}
 
-        {(task.priority || (task.tags && task.tags.length > 0)) && (
+        {(task.priority || (task.tags && task.tags.length > 0) || (!task.completed && task.date)) && (
           <div className="flex flex-wrap items-center gap-1.5 mt-2">
             {task.priority && (
               <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium border ${priorityConfig[task.priority].bg} ${priorityConfig[task.priority].text} ${priorityConfig[task.priority].border}`}>
@@ -128,6 +142,17 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
                 {priorityConfig[task.priority].label}
               </span>
             )}
+            {!task.completed && task.date && (() => {
+              const status = getDateStatus(task.date);
+              if (!status) return null;
+              const cfg = dateStatusConfig[status];
+              return (
+                <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium ${cfg.cls}`}>
+                  <CalendarClock className="w-2.5 h-2.5" />
+                  {cfg.label}
+                </span>
+              );
+            })()}
             {task.tags?.map(tag => (
               <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">
                 #{tag}
