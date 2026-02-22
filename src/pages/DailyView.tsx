@@ -3,8 +3,9 @@ import { Task, TaskFormData } from '../types/task';
 import { TaskForm } from '../components/TaskForm';
 import { TaskList } from '../components/TaskList';
 import { SearchBar } from '../components/SearchBar';
+import { TaskTemplates } from '../components/TaskTemplates';
 import { getToday, formatDisplayDate } from '../utils/date';
-import { ChevronLeft, ChevronRight, Plus, ArrowUpDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, ArrowUpDown, Sparkles } from 'lucide-react';
 
 type SortOption = 'default' | 'priority' | 'title' | 'date';
 
@@ -46,6 +47,7 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortOption>('default');
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [showTemplates, setShowTemplates] = useState(false);
 
   const dayTasks = getTasksByDate(selectedDate);
   const allTags = useMemo(() => {
@@ -156,6 +158,12 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
           }`}>
           <Plus className={`w-4 h-4 transition-transform duration-200 ${showForm ? 'rotate-45' : ''}`} strokeWidth={2.5} />
           {showForm ? 'Close form' : 'Add new task'}
+          <button
+            onClick={e => { e.stopPropagation(); setShowTemplates(true); }}
+            className="ml-auto flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/60 transition-colors"
+          >
+            <Sparkles className="w-3 h-3" /> Templates
+          </button>
         </button>
 
         {showForm && (
@@ -214,6 +222,12 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
         onUpdate={onUpdate}
         onDelete={onDelete}
         emptyMessage={search ? 'No tasks match your search' : 'No tasks yet'}
+      />
+
+      <TaskTemplates
+        open={showTemplates}
+        onClose={() => setShowTemplates(false)}
+        onAddTask={handleAddTask}
       />
     </div>
   );
