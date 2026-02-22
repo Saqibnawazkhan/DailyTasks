@@ -102,39 +102,30 @@ function App() {
     }
   }, [todayTaskCount]);
 
-  // Show loading screen
+  // Show skeleton loading screen
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-950">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          className="text-center"
-        >
-          <div className="relative w-24 h-24 mx-auto mb-8">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-              className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500"
-            />
-            <div className="absolute inset-1.5 bg-gray-950 rounded-2xl flex items-center justify-center">
-              <Zap className="w-10 h-10 text-indigo-400" />
+      <div className="flex h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
+        {/* Sidebar skeleton */}
+        <div className="hidden md:flex flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 p-4 gap-3 shrink-0 animate-pulse">
+          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded-xl mb-4" />
+          {[1,2,3,4,5].map(i => <div key={i} className="h-10 bg-gray-100 dark:bg-gray-800 rounded-xl" />)}
+        </div>
+        {/* Content skeleton */}
+        <div className="flex-1 flex flex-col p-6 gap-4">
+          <div className="h-10 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse w-48" />
+          <div className="h-24 bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl animate-pulse" />
+          <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" />
+          {[1,2,3].map(i => (
+            <div key={i} className="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800 animate-pulse">
+              <div className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 shrink-0" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+                <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded w-1/2" />
+              </div>
             </div>
-          </div>
-          <h1 className="text-2xl font-bold text-white mb-2">TaskFlow</h1>
-          <p className="text-gray-500 text-sm">Loading your workspace…</p>
-          <div className="flex justify-center gap-1.5 mt-6">
-            {[0, 1, 2].map(i => (
-              <motion.span
-                key={i}
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
-                className="w-2 h-2 bg-indigo-500 rounded-full inline-block"
-              />
-            ))}
-          </div>
-        </motion.div>
+          ))}
+        </div>
       </div>
     );
   }
