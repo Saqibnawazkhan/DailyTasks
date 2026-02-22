@@ -14,6 +14,7 @@ import { PomodoroTimer } from './components/PomodoroTimer';
 import { FocusMode } from './components/FocusMode';
 import { ShortcutsModal } from './components/ShortcutsModal';
 import { useSettingsStore } from './store/settingsStore';
+import { OnboardingModal } from './components/OnboardingModal';
 
 type View = 'today' | 'kanban' | 'weekly' | 'calendar' | 'report';
 
@@ -24,6 +25,7 @@ function App() {
   const [pomodoroOpen, setPomodoroOpen] = useState(false);
   const [focusOpen, setFocusOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(() => !localStorage.getItem('taskflow-onboarded'));
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError, exportTasks, importTasks } = useTasks();
   const { theme, setTheme } = useThemeStore();
   const { soundEnabled, setSoundEnabled } = useSettingsStore();
@@ -425,6 +427,13 @@ function App() {
         onNavigate={(view) => setCurrentView(view as View)}
         onToggleTask={toggleTask}
       />
+
+      {/* Onboarding */}
+      <AnimatePresence>
+        {showOnboarding && (
+          <OnboardingModal onClose={() => { setShowOnboarding(false); localStorage.setItem('taskflow-onboarded', '1'); }} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
