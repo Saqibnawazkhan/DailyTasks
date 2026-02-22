@@ -70,18 +70,18 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
   return (
     <div className="space-y-6">
       {/* Month Navigation */}
-      <div className="bg-white p-4 rounded-2xl shadow-lg border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
           <button
             onClick={goToPrevMonth}
-            className="p-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 active:scale-90"
+            className="p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 text-gray-600 dark:text-gray-300 transition-all duration-300 active:scale-90"
             aria-label="Previous month"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
 
           <div className="flex items-center gap-4">
-            <h2 className="text-xl font-bold text-gray-800">{monthLabel}</h2>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">{monthLabel}</h2>
             <button
               onClick={goToCurrentMonth}
               className="btn-ripple px-4 py-2 text-sm bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
@@ -92,7 +92,7 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
 
           <button
             onClick={goToNextMonth}
-            className="p-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 active:scale-90"
+            className="p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 text-gray-600 dark:text-gray-300 transition-all duration-300 active:scale-90"
             aria-label="Next month"
           >
             <ChevronRight className="w-6 h-6" />
@@ -101,11 +101,11 @@ export function CalendarView({ tasks, onSelectDate }: CalendarViewProps) {
       </div>
 
       {/* Calendar Grid */}
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         {/* Week days header */}
-        <div className="grid grid-cols-7 bg-indigo-50 border-b border-gray-200">
+        <div className="grid grid-cols-7 bg-indigo-50 dark:bg-indigo-900/20 border-b border-gray-200 dark:border-gray-700">
           {weekDays.map((day, index) => (
-            <div key={index} className="py-3 text-center text-xs font-bold text-gray-600 uppercase tracking-wider" title={weekDaysFull[index]}>
+            <div key={index} className="py-3 text-center text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider" title={weekDaysFull[index]}>
               {day}
             </div>
           ))}

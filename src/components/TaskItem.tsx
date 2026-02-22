@@ -54,8 +54,8 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
     <div
       className={`group relative flex items-start gap-4 p-4 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
         task.completed
-          ? 'bg-gray-100 border-gray-200 scale-[0.98]'
-          : 'bg-white border-gray-200 hover:border-indigo-400 hover:shadow-lg hover:scale-[1.01]'
+          ? 'bg-gray-100 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 scale-[0.98]'
+          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-lg hover:scale-[1.01]'
       }`}
     >
       {/* Checkbox */}
@@ -84,13 +84,13 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
       {/* Content */}
       <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onToggle(task.id)}>
         <div className={`font-medium transition-all duration-200 ${
-          task.completed ? 'text-gray-400 line-through' : 'text-gray-800'
+          task.completed ? 'text-gray-400 dark:text-gray-500 line-through' : 'text-gray-800 dark:text-gray-100'
         }`}>
           {task.title}
         </div>
 
         {task.notes && (
-          <p className={`mt-1 text-sm ${task.completed ? 'text-gray-300' : 'text-gray-500'}`}>
+          <p className={`mt-1 text-sm ${task.completed ? 'text-gray-300 dark:text-gray-600' : 'text-gray-500 dark:text-gray-400'}`}>
             {task.notes}
           </p>
         )}
@@ -118,7 +118,7 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
       <div className="relative">
         <button
           onClick={() => setShowMenu(!showMenu)}
-          className="p-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 active:scale-95"
+          className="p-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 active:scale-95 text-gray-500 dark:text-gray-400"
           aria-label="Task options"
           title="More options"
         >
@@ -128,13 +128,13 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
         {showMenu && (
           <>
             <div className="fixed inset-0 z-10" onClick={() => setShowMenu(false)} />
-            <div className="absolute right-0 top-10 z-20 w-40 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 overflow-hidden animate-scale-up">
+            <div className="absolute right-0 top-10 z-20 w-40 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 py-2 overflow-hidden animate-scale-up">
               <button
                 onClick={() => {
                   setIsEditing(true);
                   setShowMenu(false);
                 }}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200"
+                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 transition-all duration-200"
               >
                 <Pencil className="w-4 h-4" />
                 Edit

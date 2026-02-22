@@ -66,9 +66,9 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-3xl shadow-xl border-2 border-indigo-200">
+    <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-xl border-2 border-indigo-200 dark:border-indigo-900">
       <div>
-        <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="title" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
           What needs to be done?
         </label>
         <input
@@ -77,10 +77,10 @@ export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCa
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="✨ Enter your task..."
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 text-gray-800 ${
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 text-gray-800 dark:text-gray-100 ${
             errors.title
-              ? 'border-red-400 bg-red-50'
-              : 'border-gray-300 focus:border-indigo-500 bg-gray-50'
+              ? 'border-red-400 bg-red-50 dark:bg-red-900/20'
+              : 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 bg-gray-50 dark:bg-gray-700'
           }`}
           maxLength={TITLE_MAX_LENGTH}
         />

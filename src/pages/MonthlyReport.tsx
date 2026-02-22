@@ -121,32 +121,32 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mb-3">
             <ClipboardList className="w-5 h-5 text-indigo-600" />
           </div>
-          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Total Tasks</p>
+          <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Total Tasks</p>
           <p className="text-3xl font-bold text-gray-900 mt-1">{report.stats.total}</p>
         </div>
-        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mb-3">
             <CheckCircle className="w-5 h-5 text-emerald-600" />
           </div>
-          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Completed</p>
+          <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Completed</p>
           <p className="text-3xl font-bold text-emerald-600 mt-1">{report.stats.completed}</p>
         </div>
-        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center mb-3">
             <Clock className="w-5 h-5 text-rose-600" />
           </div>
-          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Incomplete</p>
+          <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Incomplete</p>
           <p className="text-3xl font-bold text-rose-600 mt-1">{report.stats.incomplete}</p>
         </div>
-        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
             <TrendingUp className="w-5 h-5 text-purple-600" />
           </div>
-          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Rate</p>
+          <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Rate</p>
           <p className={`text-3xl font-bold mt-1 ${color}`}>{report.stats.completionPercentage}%</p>
           <p className={`text-xs font-medium ${color}`}>{grade}</p>
         </div>

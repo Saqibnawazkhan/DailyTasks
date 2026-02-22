@@ -71,11 +71,11 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
       )}
 
       {/* Date Navigation Card */}
-      <div className="bg-white p-4 rounded-2xl shadow-lg border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
           <button
             onClick={goToPrevDay}
-            className="p-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 active:scale-90"
+            className="p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 text-gray-600 dark:text-gray-300 transition-all duration-300 active:scale-90"
             aria-label="Previous day"
           >
             <ChevronLeft className="w-6 h-6" />
@@ -112,7 +112,7 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
 
           <button
             onClick={goToNextDay}
-            className="p-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 active:scale-90"
+            className="p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 text-gray-600 dark:text-gray-300 transition-all duration-300 active:scale-90"
             aria-label="Next day"
           >
             <ChevronRight className="w-6 h-6" />
