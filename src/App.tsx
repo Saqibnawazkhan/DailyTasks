@@ -110,177 +110,169 @@ function App() {
   const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-gray-900 dark:to-slate-900 relative overflow-hidden transition-colors duration-300">
-      {/* Animated background shapes */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-      </div>
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
-        <div className="max-w-5xl mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <h1 className="text-xl font-bold text-indigo-600 flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform" onClick={() => setCurrentView('today')}>
-                <Zap className="w-7 h-7 text-indigo-600" />
-                TaskFlow
-              </h1>
-              {tasks.length > 0 && (
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-indigo-50 rounded-xl border border-indigo-200">
-                  <span className="text-sm text-gray-700 font-medium">{tasks.filter(t => t.completed).length}/{tasks.length}</span>
-                  <span className="text-xs text-indigo-600 font-medium">done</span>
-                </div>
-              )}
-            </div>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={() => setTheme(nextTheme)}
-              title={`Switch to ${nextTheme} mode`}
-              className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-all duration-200 hover:scale-110 active:scale-95"
-            >
-              {themeIcons[theme]}
-            </button>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden sm:flex gap-1 bg-gray-100 dark:bg-gray-800 p-1.5 rounded-2xl">
-              {navItems.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => setCurrentView(item.id)}
-                  className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 ${
-                    currentView === item.id
-                      ? 'bg-indigo-600 text-white shadow-lg'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-gray-700'
-                  }`}
-                >
-                  <span className={`transition-transform duration-300 ${currentView === item.id ? 'scale-110' : ''}`}>
-                    {item.icon}
-                  </span>
-                  <span className="font-medium">{item.label}</span>
-                  {item.id === 'today' && todayTaskCount > 0 && (
-                    <span className={`ml-1 px-1.5 py-0.5 text-xs font-bold rounded-full min-w-[20px] text-center ${
-                      currentView === item.id ? 'bg-white text-indigo-600' : 'bg-rose-500 text-white'
-                    }`}>
-                      {todayTaskCount > 9 ? '9+' : todayTaskCount}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </nav>
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300 overflow-hidden">
+      {/* Sidebar — desktop */}
+      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shrink-0">
+        {/* Logo */}
+        <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100 dark:border-gray-800">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900">
+            <Zap className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 className="font-bold text-gray-900 dark:text-white leading-none">TaskFlow</h1>
+            <p className="text-[11px] text-gray-400 mt-0.5">v3.0</p>
           </div>
         </div>
-      </header>
 
-      {/* Error Banner */}
-      {error && (
-        <div className="mx-4 mt-4 animate-slide-in-right">
-          <div className="max-w-5xl mx-auto bg-gradient-to-r from-rose-50 to-red-50 border border-rose-200 rounded-2xl px-5 py-4 flex items-center gap-4 shadow-lg shadow-rose-100/50">
-            <div className="w-10 h-10 bg-gradient-to-br from-rose-100 to-red-100 rounded-xl flex items-center justify-center flex-shrink-0 animate-shake">
-              <AlertTriangle className="w-5 h-5 text-rose-600" />
-            </div>
-            <p className="text-sm text-rose-700 flex-1 font-medium">{error}</p>
-            <button onClick={clearError} className="p-2 hover:bg-rose-100 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95">
-              <X className="w-5 h-5 text-rose-500" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Main Content */}
-      <main className="max-w-5xl mx-auto px-4 py-6 pb-24 sm:pb-6">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentView}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
-          >
-            {currentView === 'today' && (
-              <DailyView
-                tasks={tasks}
-                getTasksByDate={getTasksByDate}
-                onAddTask={addTask}
-                onToggle={toggleTask}
-                onUpdate={updateTask}
-                onDelete={deleteTask}
-              />
-            )}
-            {currentView === 'calendar' && (
-              <CalendarView
-                tasks={tasks}
-                onSelectDate={handleSelectDateFromCalendar}
-              />
-            )}
-            {currentView === 'report' && (
-              <MonthlyReport tasks={tasks} />
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </main>
-
-      {/* Footer */}
-      <footer className="hidden sm:block max-w-5xl mx-auto px-4 pb-6 relative z-10">
-        <div className="text-center text-sm text-gray-500 pt-8 border-t border-gray-200">
-          <div className="flex items-center justify-center gap-6 mb-2">
-            <span className="flex items-center gap-2 hover:text-indigo-600 transition-colors cursor-default">
-              <Zap className="w-4 h-4" /> TaskFlow v2.5
-            </span>
-            <span className="text-gray-300">|</span>
-            <span className="flex items-center gap-1 text-gray-600">
-              Press <kbd className="px-2 py-1 bg-white rounded-lg text-indigo-600 font-mono text-xs shadow-sm border border-gray-200">1</kbd>
-              <kbd className="px-2 py-1 bg-white rounded-lg text-indigo-600 font-mono text-xs shadow-sm border border-gray-200">2</kbd>
-              <kbd className="px-2 py-1 bg-white rounded-lg text-indigo-600 font-mono text-xs shadow-sm border border-gray-200">3</kbd> to navigate
-            </span>
-            <span className="text-gray-300">|</span>
-            <span className="flex items-center gap-1 text-gray-600">
-              <kbd className="px-2 py-1 bg-white rounded-lg text-indigo-600 font-mono text-xs shadow-sm border border-gray-200">N</kbd> new task
-            </span>
-          </div>
-          <p className="text-xs text-gray-500">Made with ❤️ for productivity lovers</p>
-        </div>
-      </footer>
-
-      {/* Scroll to Top Button */}
-      {showScrollTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 z-40 w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full shadow-lg shadow-indigo-200 hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce-once flex items-center justify-center"
-          aria-label="Scroll to top"
-        >
-          <ChevronUp className="w-6 h-6" />
-        </button>
-      )}
-
-      {/* Mobile Navigation */}
-      <nav className="sm:hidden fixed bottom-4 left-4 right-4 bg-white border border-gray-200 rounded-3xl shadow-xl z-30">
-        <div className="flex justify-around py-3 px-2">
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-1">
           {navItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
-              className={`relative flex flex-col items-center gap-1 py-2 px-5 rounded-2xl transition-all duration-300 ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 currentView === item.id
-                  ? 'text-white bg-indigo-600 shadow-lg scale-105'
-                  : 'text-gray-600 hover:text-gray-800 active:scale-95'
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-indigo-900'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
-              <span className={`transition-transform duration-300 ${currentView === item.id ? 'scale-110' : ''}`}>
-                {item.icon}
-              </span>
-              <span className="text-xs font-semibold">{item.label}</span>
+              {item.icon}
+              <span>{item.label}</span>
               {item.id === 'today' && todayTaskCount > 0 && (
-                <span className={`absolute -top-1 -right-1 w-5 h-5 text-xs font-bold rounded-full flex items-center justify-center ${
-                  currentView === item.id ? 'bg-white text-indigo-600' : 'bg-rose-500 text-white'
-                }`}>
-                  {todayTaskCount > 9 ? '9+' : todayTaskCount}
-                </span>
+                <span className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-full ${
+                  currentView === item.id ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-600 dark:bg-rose-900/40 dark:text-rose-400'
+                }`}>{todayTaskCount}</span>
               )}
             </button>
           ))}
+        </nav>
+
+        {/* Task counter */}
+        {tasks.length > 0 && (
+          <div className="px-4 py-3 mx-3 mb-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800">
+            <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Overall Progress</p>
+            <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300 mt-0.5">
+              {tasks.filter(t => t.completed).length} / {tasks.length}
+            </p>
+            <div className="mt-2 h-1.5 bg-indigo-100 dark:bg-indigo-900 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                style={{ width: `${tasks.length ? Math.round((tasks.filter(t => t.completed).length / tasks.length) * 100) : 0}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Theme toggle */}
+        <div className="px-3 pb-4 flex items-center gap-2">
+          {(['light', 'dark', 'system'] as const).map(t => (
+            <button
+              key={t}
+              onClick={() => setTheme(t)}
+              title={`${t} mode`}
+              className={`flex-1 flex items-center justify-center py-2 rounded-lg text-xs font-medium transition-all ${
+                theme === t
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              {t === 'light' ? <Sun className="w-3.5 h-3.5" /> : t === 'dark' ? <Moon className="w-3.5 h-3.5" /> : <Monitor className="w-3.5 h-3.5" />}
+            </button>
+          ))}
         </div>
+      </aside>
+
+      {/* Right column */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top bar — mobile header + desktop title bar */}
+        <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 sm:px-6 py-3 flex items-center justify-between shrink-0">
+          <h2 className="font-semibold text-gray-800 dark:text-gray-100 text-lg capitalize">
+            {currentView === 'today' ? 'My Tasks' : currentView === 'calendar' ? 'Calendar' : 'Statistics'}
+          </h2>
+          <div className="flex items-center gap-2">
+            {/* Mobile theme toggle */}
+            <button
+              onClick={() => setTheme(nextTheme)}
+              className="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all"
+            >
+              {themeIcons[theme]}
+            </button>
+          </div>
+        </header>
+
+        {/* Error banner */}
+        {error && (
+          <div className="mx-4 mt-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl px-4 py-3 flex items-center gap-3">
+            <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+            <p className="text-sm text-rose-700 dark:text-rose-300 flex-1">{error}</p>
+            <button onClick={clearError} className="p-1 hover:bg-rose-100 dark:hover:bg-rose-900/40 rounded-lg transition-colors">
+              <X className="w-4 h-4 text-rose-500" />
+            </button>
+          </div>
+        )}
+
+        {/* Scrollable content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 pb-28 md:pb-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentView}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+              >
+                {currentView === 'today' && (
+                  <DailyView
+                    tasks={tasks}
+                    getTasksByDate={getTasksByDate}
+                    onAddTask={addTask}
+                    onToggle={toggleTask}
+                    onUpdate={updateTask}
+                    onDelete={deleteTask}
+                  />
+                )}
+                {currentView === 'calendar' && (
+                  <CalendarView tasks={tasks} onSelectDate={handleSelectDateFromCalendar} />
+                )}
+                {currentView === 'report' && (
+                  <MonthlyReport tasks={tasks} />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </main>
+
+        {/* Scroll to top */}
+        {showScrollTop && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-40 w-10 h-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </button>
+        )}
+      </div>
+
+      {/* Mobile bottom nav */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 z-30 flex">
+        {navItems.map(item => (
+          <button
+            key={item.id}
+            onClick={() => setCurrentView(item.id)}
+            className={`flex-1 flex flex-col items-center gap-1 py-3 transition-all duration-200 ${
+              currentView === item.id ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-500'
+            }`}
+          >
+            {item.icon}
+            <span className="text-[10px] font-semibold">{item.label}</span>
+            {item.id === 'today' && todayTaskCount > 0 && (
+              <span className="absolute top-2 right-[calc(33%-8px)] w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                {todayTaskCount > 9 ? '9+' : todayTaskCount}
+              </span>
+            )}
+          </button>
+        ))}
       </nav>
     </div>
   );
