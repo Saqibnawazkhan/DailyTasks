@@ -5,7 +5,7 @@ import { TaskList } from '../components/TaskList';
 import { SearchBar } from '../components/SearchBar';
 import { TaskTemplates } from '../components/TaskTemplates';
 import { getToday, formatDisplayDate } from '../utils/date';
-import { ChevronLeft, ChevronRight, Plus, ArrowUpDown, Sparkles, SlidersHorizontal, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, ArrowUpDown, Sparkles, SlidersHorizontal, X, LayoutList, LayoutGrid } from 'lucide-react';
 
 type SortOption = 'default' | 'priority' | 'title' | 'date';
 
@@ -51,6 +51,7 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
   const [showFilterPanel, setShowFilterPanel] = useState(false);
   const [filterPriority, setFilterPriority] = useState<string>('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'completed'>('all');
+  const [gridView, setGridView] = useState(false);
 
   const dayTasks = getTasksByDate(selectedDate);
   const allTags = useMemo(() => {
@@ -220,6 +221,15 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
               </select>
               <ArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
             </div>
+            {/* Grid/List toggle */}
+            <button
+              onClick={() => setGridView(v => !v)}
+              className={`p-2.5 rounded-xl border transition-all ${gridView ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+              title={gridView ? 'Switch to list view' : 'Switch to grid view'}
+            >
+              {gridView ? <LayoutList className="w-4 h-4" /> : <LayoutGrid className="w-4 h-4" />}
+            </button>
+
             <button
               onClick={() => setShowFilterPanel(v => !v)}
               className={`relative p-2.5 rounded-xl border transition-all ${showFilterPanel || activeFilterCount > 0 ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
@@ -293,6 +303,7 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
         onUpdate={onUpdate}
         onDelete={onDelete}
         emptyMessage={search ? 'No tasks match your search' : 'No tasks yet'}
+        gridView={gridView}
       />
 
       <TaskTemplates

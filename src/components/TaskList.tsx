@@ -26,6 +26,7 @@ interface TaskListProps {
   onUpdate: (id: string, updates: Partial<TaskFormData>) => void;
   onDelete: (id: string) => void;
   emptyMessage?: string;
+  gridView?: boolean;
 }
 
 const quotes = [
@@ -79,7 +80,7 @@ function SortableTaskRow({
   );
 }
 
-export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet' }: TaskListProps) {
+export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet', gridView = false }: TaskListProps) {
   const [showCompleted, setShowCompleted] = useState(true);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [orderedPending, setOrderedPending] = useState<Task[]>(() => tasks.filter(t => !t.completed));
@@ -155,7 +156,7 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={syncedPending.map(t => t.id)} strategy={verticalListSortingStrategy}>
               <AnimatePresence initial={false}>
-                <div className="space-y-2">
+                <div className={gridView ? 'grid grid-cols-2 gap-2' : 'space-y-2'}>
                   {syncedPending.map(task => (
                     <SortableTaskRow
                       key={task.id}
