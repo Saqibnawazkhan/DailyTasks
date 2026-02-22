@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Task, TaskFormData } from '../types/task';
+import { Task, TaskFormData, Subtask } from '../types/task';
 import { TaskForm } from './TaskForm';
-import { Check, MoreVertical, Pencil, Trash2, Flag } from 'lucide-react';
+import { Check, MoreVertical, Pencil, Trash2, Flag, Plus, ListChecks } from 'lucide-react';
 
 interface TaskItemProps {
   task: Task;
@@ -21,6 +22,23 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
   const [isEditing, setIsEditing] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showSubtasks, setShowSubtasks] = useState(false);
+  const [newSubtask, setNewSubtask] = useState('');
+
+  const subtasks: Subtask[] = task.subtasks || [];
+  const doneSubtasks = subtasks.filter(s => s.completed).length;
+
+  const toggleSubtask = (subtaskId: string) => {
+    const updated = subtasks.map(s => s.id === subtaskId ? { ...s, completed: !s.completed } : s);
+    onUpdate(task.id, { subtasks: updated } as Partial<TaskFormData> & { subtasks: Subtask[] });
+  };
+
+  const addSubtask = () => {
+    if (!newSubtask.trim()) return;
+    const updated = [...subtasks, { id: uuidv4(), title: newSubtask.trim(), completed: false }];
+    onUpdate(task.id, { subtasks: updated } as Partial<TaskFormData> & { subtasks: Subtask[] });
+    setNewSubtask('');
+  };
 
   const handleEdit = (data: TaskFormData) => {
     onUpdate(task.id, data);
@@ -117,7 +135,29 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
             ))}
           </div>
         )}
+
+        {/* Subtask toggle */}
+        {subtasks.length > 0 && (
+          <button
+            onClick={e => { e.stopPropagation(); setShowSubtasks(v => !v); }}
+            className="mt-2 flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 hover:text-indigo-500 transition-colors"
+          >
+            <ListChecks className="w-3.5 h-3.5" />
+            {doneSubtasks}/{subtasks.length} subtasks
+          </button>
+        )}
       </div>
+
+      {/* Subtask expander button (no subtasks yet) */}
+      {subtasks.length === 0 && !task.completed && (
+        <button
+          onClick={e => { e.stopPropagation(); setShowSubtasks(v => !v); }}
+          className="opacity-0 group-hover:opacity-100 p-1 text-gray-300 dark:text-gray-600 hover:text-indigo-400 rounded transition-all"
+          title="Add subtasks"
+        >
+          <ListChecks className="w-4 h-4" />
+        </button>
+      )}
 
       {/* Menu Button */}
       <div className="relative">
@@ -187,6 +227,52 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
           </div>
         </div>
       )}
+
+      {/* Subtask Panel */}
+      <AnimatePresence>
+        {showSubtasks && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="overflow-hidden col-span-full"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="mt-2 ml-8 space-y-1.5 border-l-2 border-indigo-100 dark:border-indigo-900 pl-3">
+              {subtasks.map(sub => (
+                <label key={sub.id} className="flex items-center gap-2 cursor-pointer group/sub">
+                  <button
+                    onClick={() => toggleSubtask(sub.id)}
+                    className={`w-4 h-4 rounded border flex items-center justify-center transition-colors shrink-0 ${
+                      sub.completed ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-gray-300 dark:border-gray-600'
+                    }`}
+                  >
+                    {sub.completed && <Check className="w-2.5 h-2.5" strokeWidth={3} />}
+                  </button>
+                  <span className={`text-xs ${sub.completed ? 'line-through text-gray-400 dark:text-gray-600' : 'text-gray-600 dark:text-gray-300'}`}>
+                    {sub.title}
+                  </span>
+                </label>
+              ))}
+              <div className="flex items-center gap-1 mt-2">
+                <input
+                  type="text"
+                  value={newSubtask}
+                  onChange={e => setNewSubtask(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && addSubtask()}
+                  placeholder="Add subtask…"
+                  className="flex-1 text-xs px-2 py-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                />
+                <button onClick={addSubtask} disabled={!newSubtask.trim()}
+                  className="p-1 bg-indigo-500 text-white rounded-lg disabled:opacity-40 hover:bg-indigo-600 transition-colors">
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

@@ -1,5 +1,11 @@
 export type Priority = 'low' | 'medium' | 'high';
 
+export interface Subtask {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
 export interface Task {
   id: string;
   title: string;
@@ -11,6 +17,7 @@ export interface Task {
   tags?: string[];
   completedAt?: string | null;
   updatedAt?: string | null;
+  subtasks?: Subtask[];
 }
 
 export interface TaskFormData {
