@@ -1,7 +1,8 @@
 import { useState, FormEvent } from 'react';
+import { motion } from 'framer-motion';
 import { Priority, TaskFormData } from '../types/task';
 import { getToday } from '../utils/date';
-import { Plus } from 'lucide-react';
+import { Plus, X, Flag, Calendar, Tag, FileText } from 'lucide-react';
 
 interface TaskFormProps {
   onSubmit: (data: TaskFormData) => void;
@@ -10,176 +11,146 @@ interface TaskFormProps {
   onCancel?: () => void;
 }
 
-const TITLE_MAX_LENGTH = 120;
-const NOTES_MAX_LENGTH = 500;
+const TITLE_MAX = 120;
+const NOTES_MAX = 500;
+
+const PRIORITY_OPTIONS: { value: Priority | ''; label: string; color: string }[] = [
+  { value: '',       label: 'None',   color: 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400' },
+  { value: 'low',    label: 'Low',    color: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' },
+  { value: 'medium', label: 'Medium', color: 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400' },
+  { value: 'high',   label: 'High',   color: 'bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-400' },
+];
 
 export function TaskForm({ onSubmit, initialData, submitLabel = 'Add Task', onCancel }: TaskFormProps) {
-  const [title, setTitle] = useState(initialData?.title || '');
-  const [notes, setNotes] = useState(initialData?.notes || '');
+  const [title, setTitle]       = useState(initialData?.title || '');
+  const [notes, setNotes]       = useState(initialData?.notes || '');
   const [priority, setPriority] = useState<Priority | ''>(initialData?.priority || '');
-  const [tags, setTags] = useState(initialData?.tags?.join(', ') || '');
-  const [date, setDate] = useState(initialData?.date || getToday());
-  const [errors, setErrors] = useState<{ title?: string; notes?: string }>({});
+  const [tags, setTags]         = useState(initialData?.tags?.join(', ') || '');
+  const [date, setDate]         = useState(initialData?.date || getToday());
+  const [errors, setErrors]     = useState<{ title?: string }>({});
 
-  const validate = (): boolean => {
-    const newErrors: { title?: string; notes?: string } = {};
-
-    if (!title.trim()) {
-      newErrors.title = 'Title is required';
-    } else if (title.length > TITLE_MAX_LENGTH) {
-      newErrors.title = `Title must be ${TITLE_MAX_LENGTH} characters or less`;
-    }
-
-    if (notes.length > NOTES_MAX_LENGTH) {
-      newErrors.notes = `Notes must be ${NOTES_MAX_LENGTH} characters or less`;
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const validate = () => {
+    if (!title.trim()) { setErrors({ title: 'Title is required' }); return false; }
+    if (title.length > TITLE_MAX) { setErrors({ title: `Max ${TITLE_MAX} chars` }); return false; }
+    setErrors({});
+    return true;
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-
-    const tagList = tags
-      .split(',')
-      .map(t => t.trim())
-      .filter(t => t.length > 0);
-
-    onSubmit({
-      title: title.trim(),
-      notes: notes.trim() || undefined,
-      priority: priority || null,
-      tags: tagList,
-      date
-    });
-
-    // Reset form if not editing
-    if (!initialData) {
-      setTitle('');
-      setNotes('');
-      setPriority('');
-      setTags('');
-      setDate(getToday());
-    }
+    const tagList = tags.split(',').map(t => t.trim()).filter(Boolean);
+    onSubmit({ title: title.trim(), notes: notes.trim() || undefined, priority: priority || null, tags: tagList, date });
+    if (!initialData) { setTitle(''); setNotes(''); setPriority(''); setTags(''); setDate(getToday()); }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-xl border-2 border-indigo-200 dark:border-indigo-900">
-      <div>
-        <label htmlFor="title" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-          What needs to be done?
-        </label>
-        <input
-          type="text"
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="✨ Enter your task..."
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 text-gray-800 dark:text-gray-100 ${
-            errors.title
-              ? 'border-red-400 bg-red-50 dark:bg-red-900/20'
-              : 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 bg-gray-50 dark:bg-gray-700'
-          }`}
-          maxLength={TITLE_MAX_LENGTH}
-        />
-        <div className="flex justify-between mt-1.5">
-          {errors.title && <span className="text-red-500 text-xs font-medium">{errors.title}</span>}
-          <span className="text-gray-500 text-xs ml-auto">{title.length}/{TITLE_MAX_LENGTH}</span>
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="notes" className="block text-sm font-semibold text-gray-700 mb-2">
-          Notes (optional)
-        </label>
-        <textarea
-          id="notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="📝 Add some details..."
-          rows={2}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-0 transition-all duration-300 resize-none text-gray-800 ${
-            errors.notes
-              ? 'border-red-400 bg-red-50'
-              : 'border-gray-300 focus:border-indigo-500 bg-gray-50'
-          }`}
-          maxLength={NOTES_MAX_LENGTH}
-        />
-        <div className="flex justify-between mt-1.5">
-          {errors.notes && <span className="text-red-500 text-xs font-medium">{errors.notes}</span>}
-          <span className="text-gray-500 text-xs ml-auto">{notes.length}/{NOTES_MAX_LENGTH}</span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div>
-          <label htmlFor="priority" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-            Priority
-          </label>
-          <select
-            id="priority"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value as Priority | '')}
-            className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 bg-gray-50 text-sm text-gray-800 transition-colors"
-          >
-            <option value="">⚪ None</option>
-            <option value="low">🟢 Low</option>
-            <option value="medium">🟡 Medium</option>
-            <option value="high">🔴 High</option>
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="date" className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
-            Date
-          </label>
-          <input
-            type="date"
-            id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 bg-gray-50 text-sm text-gray-800 transition-colors"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="tags" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-            Tags
-          </label>
+    <motion.form
+      onSubmit={handleSubmit}
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden"
+    >
+      {/* Title row */}
+      <div className="px-4 pt-4 pb-2">
+        <div className="flex items-center gap-2">
+          <Plus className="w-4 h-4 text-indigo-400 shrink-0" />
           <input
             type="text"
-            id="tags"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            placeholder="work, personal"
-            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-400 bg-gray-50/50 text-sm transition-colors"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="What needs to be done?"
+            autoFocus
+            maxLength={TITLE_MAX}
+            className={`flex-1 text-sm font-medium bg-transparent focus:outline-none text-gray-800 dark:text-gray-100 placeholder-gray-400 ${errors.title ? 'placeholder-rose-400' : ''}`}
+          />
+          <span className="text-[10px] text-gray-300 dark:text-gray-600 shrink-0">{title.length}/{TITLE_MAX}</span>
+        </div>
+        {errors.title && <p className="mt-1 ml-6 text-xs text-rose-500">{errors.title}</p>}
+      </div>
+
+      {/* Notes */}
+      <div className="px-4 pb-3 border-b border-gray-100 dark:border-gray-700">
+        <div className="flex items-start gap-2">
+          <FileText className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600 mt-1 shrink-0" />
+          <textarea
+            value={notes}
+            onChange={e => setNotes(e.target.value)}
+            placeholder="Add notes… (optional)"
+            rows={2}
+            maxLength={NOTES_MAX}
+            className="flex-1 text-xs bg-transparent focus:outline-none text-gray-600 dark:text-gray-300 placeholder-gray-300 dark:placeholder-gray-600 resize-none"
           />
         </div>
       </div>
 
-      <div className="flex gap-3 pt-2">
+      {/* Meta row: priority, date, tags */}
+      <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800/50 flex flex-wrap items-center gap-3 border-b border-gray-100 dark:border-gray-700">
+        {/* Priority pills */}
+        <div className="flex items-center gap-1.5">
+          <Flag className="w-3 h-3 text-gray-400" />
+          <div className="flex gap-1">
+            {PRIORITY_OPTIONS.map(opt => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setPriority(opt.value)}
+                className={`text-[11px] px-2 py-0.5 rounded-full font-medium transition-all ${
+                  priority === opt.value
+                    ? opt.color + ' ring-2 ring-offset-1 ring-indigo-400'
+                    : opt.color + ' opacity-60 hover:opacity-100'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Date */}
+        <div className="flex items-center gap-1.5">
+          <Calendar className="w-3 h-3 text-gray-400" />
+          <input
+            type="date"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            className="text-xs bg-transparent text-gray-600 dark:text-gray-300 focus:outline-none cursor-pointer"
+          />
+        </div>
+
+        {/* Tags */}
+        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+          <Tag className="w-3 h-3 text-gray-400 shrink-0" />
+          <input
+            type="text"
+            value={tags}
+            onChange={e => setTags(e.target.value)}
+            placeholder="tags, comma-separated"
+            className="flex-1 text-xs bg-transparent text-gray-600 dark:text-gray-300 placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none min-w-0"
+          />
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="px-4 py-3 flex items-center gap-2">
         <button
           type="submit"
           disabled={!title.trim()}
-          className="btn-ripple flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-md disabled:hover:scale-100"
+          className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-sm"
         >
-          <span className="flex items-center justify-center gap-2">
-            <Plus className="w-5 h-5" />
-            {submitLabel}
-          </span>
+          <Plus className="w-4 h-4" />
+          {submitLabel}
         </button>
         {onCancel && (
           <button
             type="button"
             onClick={onCancel}
-            className="btn-ripple px-6 py-3 border-2 border-gray-200 rounded-xl text-gray-600 font-semibold hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center gap-1 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-200 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
           >
-            Cancel
+            <X className="w-4 h-4" /> Cancel
           </button>
         )}
       </div>
-    </form>
+    </motion.form>
   );
 }
