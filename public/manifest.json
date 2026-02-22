@@ -1,0 +1,31 @@
+{
+  "name": "TaskFlow - Beautiful Task Manager",
+  "short_name": "TaskFlow",
+  "description": "Manage your daily tasks with a modern, beautiful interface",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%234f46e5'/><path d='M96 40L60 100h32v52l44-52H104z' fill='white'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%234f46e5'/><path d='M256 100L160 260h88v152l164-152H272z' fill='white'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Add Task",
+      "short_name": "New Task",
+      "description": "Add a new task for today",
+      "url": "/?action=new-task"
+    }
+  ]
+}
