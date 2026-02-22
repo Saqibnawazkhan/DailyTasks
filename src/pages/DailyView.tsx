@@ -145,13 +145,46 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
         </div>
       )}
 
-      {/* Progress bar */}
+      {/* Progress bar + quick stats */}
       {dayTasks.length > 0 && (
-        <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-          <div
-            className={`h-full rounded-full transition-all duration-700 ${progress === 100 ? 'bg-emerald-500' : 'bg-indigo-500'}`}
-            style={{ width: `${progress}%` }}
-          />
+        <div className="space-y-2">
+          <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-700 ${progress === 100 ? 'bg-emerald-500' : 'bg-indigo-500'}`}
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          {/* Quick stat pills */}
+          <div className="flex flex-wrap gap-1.5">
+            {(() => {
+              const highCount = dayTasks.filter(t => !t.completed && t.priority === 'high').length;
+              const today = new Date().toISOString().split('T')[0];
+              const overdueCount = dayTasks.filter(t => !t.completed && t.date < today).length;
+              const tagCount = new Set(dayTasks.flatMap(t => t.tags || [])).size;
+              return (
+                <>
+                  {highCount > 0 && (
+                    <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-medium border border-rose-100 dark:border-rose-900">
+                      🔥 {highCount} high-priority
+                    </span>
+                  )}
+                  {overdueCount > 0 && (
+                    <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 font-medium border border-amber-100 dark:border-amber-900">
+                      ⏰ {overdueCount} overdue
+                    </span>
+                  )}
+                  {tagCount > 0 && (
+                    <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-900/20 text-indigo-500 dark:text-indigo-400 font-medium border border-indigo-100 dark:border-indigo-900">
+                      🏷 {tagCount} tag{tagCount !== 1 ? 's' : ''}
+                    </span>
+                  )}
+                  <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium border border-gray-100 dark:border-gray-700">
+                    ✅ {completedCount}/{dayTasks.length}
+                  </span>
+                </>
+              );
+            })()}
+          </div>
         </div>
       )}
 
