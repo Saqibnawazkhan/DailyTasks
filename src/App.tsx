@@ -4,7 +4,8 @@ import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
 import { MonthlyReport } from './pages/MonthlyReport';
 import { getToday } from './utils/date';
-import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X } from 'lucide-react';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor } from 'lucide-react';
+import { useThemeStore } from './store/themeStore';
 
 type View = 'today' | 'calendar' | 'report';
 
@@ -12,6 +13,7 @@ function App() {
   const [currentView, setCurrentView] = useState<View>('today');
   const [showScrollTop, setShowScrollTop] = useState(false);
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError } = useTasks();
+  const { theme, setTheme } = useThemeStore();
 
   // Scroll to top button visibility
   useEffect(() => {
@@ -103,8 +105,11 @@ function App() {
     { id: 'report', label: 'Stats', icon: <BarChart3 className="w-5 h-5" /> }
   ];
 
+  const themeIcons = { light: <Sun className="w-4 h-4" />, dark: <Moon className="w-4 h-4" />, system: <Monitor className="w-4 h-4" /> };
+  const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-gray-900 dark:to-slate-900 relative overflow-hidden transition-colors duration-300">
       {/* Animated background shapes */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
@@ -112,7 +117,7 @@ function App() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
       {/* Header */}
-      <header className="bg-white shadow-md border-b border-gray-200 sticky top-0 z-30">
+      <header className="bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
         <div className="max-w-5xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -128,8 +133,17 @@ function App() {
               )}
             </div>
 
+            {/* Theme Toggle */}
+            <button
+              onClick={() => setTheme(nextTheme)}
+              title={`Switch to ${nextTheme} mode`}
+              className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-all duration-200 hover:scale-110 active:scale-95"
+            >
+              {themeIcons[theme]}
+            </button>
+
             {/* Desktop Navigation */}
-            <nav className="hidden sm:flex gap-1 bg-gray-100 p-1.5 rounded-2xl">
+            <nav className="hidden sm:flex gap-1 bg-gray-100 dark:bg-gray-800 p-1.5 rounded-2xl">
               {navItems.map(item => (
                 <button
                   key={item.id}
@@ -137,7 +151,7 @@ function App() {
                   className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 ${
                     currentView === item.id
                       ? 'bg-indigo-600 text-white shadow-lg'
-                      : 'text-gray-700 hover:text-gray-900 hover:bg-white'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-gray-700'
                   }`}
                 >
                   <span className={`transition-transform duration-300 ${currentView === item.id ? 'scale-110' : ''}`}>
