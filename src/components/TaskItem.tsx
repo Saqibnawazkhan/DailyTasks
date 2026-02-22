@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Task, TaskFormData } from '../types/task';
 import { TaskForm } from './TaskForm';
-import { Check, MoreVertical, Pencil, Trash2 } from 'lucide-react';
+import { Check, MoreVertical, Pencil, Trash2, Flag } from 'lucide-react';
 
 interface TaskItemProps {
   task: Task;
@@ -11,9 +12,9 @@ interface TaskItemProps {
 }
 
 const priorityConfig = {
-  low: { bg: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-200', label: 'Low', tooltip: 'Low priority - do when you have time' },
-  medium: { bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200', label: 'Medium', tooltip: 'Medium priority - complete soon' },
-  high: { bg: 'bg-rose-100', text: 'text-rose-700', border: 'border-rose-200', label: 'High', tooltip: 'High priority - urgent task!' }
+  low: { bg: 'bg-emerald-50 dark:bg-emerald-900/20', text: 'text-emerald-700 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800', dot: 'bg-emerald-500', label: 'Low' },
+  medium: { bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-700 dark:text-amber-400', border: 'border-amber-200 dark:border-amber-800', dot: 'bg-amber-500', label: 'Medium' },
+  high: { bg: 'bg-rose-50 dark:bg-rose-900/20', text: 'text-rose-700 dark:text-rose-400', border: 'border-rose-200 dark:border-rose-800', dot: 'bg-rose-500', label: 'High' }
 };
 
 export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) {
@@ -51,63 +52,67 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
   }
 
   return (
-    <div
-      className={`group relative flex items-start gap-4 p-4 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.18 }}
+      className={`group relative flex items-start gap-3 p-4 rounded-2xl border transition-all duration-200 ${
         task.completed
-          ? 'bg-gray-100 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 scale-[0.98]'
-          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-lg hover:scale-[1.01]'
+          ? 'bg-gray-50 dark:bg-gray-800/40 border-gray-100 dark:border-gray-800 opacity-60'
+          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md'
       }`}
     >
+      {/* Priority stripe */}
+      {task.priority && !task.completed && (
+        <div className={`absolute left-0 top-3 bottom-3 w-1 rounded-full ${priorityConfig[task.priority].dot}`} />
+      )}
+
       {/* Checkbox */}
-      <div className="relative mt-0.5">
-        <button
-          onClick={() => onToggle(task.id)}
-          className={`relative flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 btn-press ${
-            task.completed
-              ? 'bg-gradient-to-r from-emerald-400 to-teal-400 border-transparent text-white shadow-md shadow-emerald-200'
-              : 'border-gray-300 hover:border-indigo-400 hover:bg-indigo-50 hover:scale-110'
-          }`}
-          aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
-        >
+      <button
+        onClick={() => onToggle(task.id)}
+        className={`flex-shrink-0 mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 ${
+          task.completed
+            ? 'bg-emerald-500 border-emerald-500 text-white'
+            : 'border-gray-300 dark:border-gray-600 hover:border-indigo-400 dark:hover:border-indigo-500'
+        }`}
+        aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
+      >
+        <AnimatePresence>
           {task.completed && (
-            <Check className="w-3.5 h-3.5 animate-bounce-once" strokeWidth={3} />
+            <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} transition={{ duration: 0.15 }}>
+              <Check className="w-3 h-3" strokeWidth={3} />
+            </motion.span>
           )}
-        </button>
-        {task.completed && (
-          <>
-            <span className="absolute inset-0 rounded-full animate-ping-once bg-emerald-400/30"></span>
-            <span className="absolute -inset-1 rounded-full animate-ping-once bg-emerald-300/20"></span>
-          </>
-        )}
-      </div>
+        </AnimatePresence>
+      </button>
 
       {/* Content */}
       <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onToggle(task.id)}>
-        <div className={`font-medium transition-all duration-200 ${
+        <p className={`text-sm font-medium leading-snug transition-all duration-200 ${
           task.completed ? 'text-gray-400 dark:text-gray-500 line-through' : 'text-gray-800 dark:text-gray-100'
         }`}>
           {task.title}
-        </div>
+        </p>
 
         {task.notes && (
-          <p className={`mt-1 text-sm ${task.completed ? 'text-gray-300 dark:text-gray-600' : 'text-gray-500 dark:text-gray-400'}`}>
+          <p className="mt-1 text-xs text-gray-400 dark:text-gray-500 leading-relaxed line-clamp-2">
             {task.notes}
           </p>
         )}
 
         {(task.priority || (task.tags && task.tags.length > 0)) && (
-          <div className="flex flex-wrap gap-1.5 mt-2">
+          <div className="flex flex-wrap items-center gap-1.5 mt-2">
             {task.priority && (
-              <span
-                className={`text-xs px-2.5 py-1 rounded-full font-medium border cursor-help ${priorityConfig[task.priority].bg} ${priorityConfig[task.priority].text} ${priorityConfig[task.priority].border}`}
-                title={priorityConfig[task.priority].tooltip}
-              >
+              <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium border ${priorityConfig[task.priority].bg} ${priorityConfig[task.priority].text} ${priorityConfig[task.priority].border}`}>
+                <Flag className="w-2.5 h-2.5" />
                 {priorityConfig[task.priority].label}
               </span>
             )}
             {task.tags?.map(tag => (
-              <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-600 font-medium">
-                {tag}
+              <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">
+                #{tag}
               </span>
             ))}
           </div>
@@ -182,6 +187,6 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
