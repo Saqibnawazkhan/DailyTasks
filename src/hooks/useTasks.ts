@@ -4,8 +4,23 @@ import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 import { Task, TaskFormData } from '../types/task';
 import { loadTasks, saveTasks } from '../utils/storage';
+import { useSettingsStore } from '../store/settingsStore';
+
+function playTick() {
+  try {
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 600;
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+    osc.start(); osc.stop(ctx.currentTime + 0.12);
+  } catch { /* ignore */ }
+}
 
 export function useTasks() {
+  const { soundEnabled } = useSettingsStore();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +90,10 @@ export function useTasks() {
       const updated = prev.map(task => {
         if (task.id !== id) return task;
         const newCompleted = !task.completed;
-        if (newCompleted) toast.success('Task completed! 🎉', { description: task.title });
+        if (newCompleted) {
+          toast.success('Task completed! 🎉', { description: task.title });
+          if (soundEnabled) playTick();
+        }
         return { ...task, completed: newCompleted, completedAt: newCompleted ? now : null, updatedAt: now };
       });
 

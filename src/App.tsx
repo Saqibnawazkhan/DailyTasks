@@ -13,6 +13,7 @@ import { CommandPalette } from './components/CommandPalette';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { FocusMode } from './components/FocusMode';
 import { ShortcutsModal } from './components/ShortcutsModal';
+import { useSettingsStore } from './store/settingsStore';
 
 type View = 'today' | 'kanban' | 'weekly' | 'calendar' | 'report';
 
@@ -25,6 +26,7 @@ function App() {
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError, exportTasks, importTasks } = useTasks();
   const { theme, setTheme } = useThemeStore();
+  const { soundEnabled, setSoundEnabled } = useSettingsStore();
 
   // Scroll to top button visibility
   useEffect(() => {
@@ -229,6 +231,18 @@ function App() {
             <Upload className="w-3.5 h-3.5" /> Import
             <input type="file" accept=".json" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) { importTasks(f); e.target.value = ''; } }} />
           </label>
+        </div>
+
+        {/* Sound toggle */}
+        <div className="px-3 pb-2 flex items-center gap-2">
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${
+              soundEnabled ? 'bg-indigo-600 text-white shadow-sm' : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
+            }`}
+          >
+            {soundEnabled ? '🔊 Sound On' : '🔇 Sound Off'}
+          </button>
         </div>
 
         {/* Theme toggle */}
