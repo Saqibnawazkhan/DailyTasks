@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useTasks } from './hooks/useTasks';
 import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
@@ -189,27 +190,35 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-4 py-6 pb-24 sm:pb-6">
-        <div key={currentView} className="animate-fade-in">
-          {currentView === 'today' && (
-            <DailyView
-              tasks={tasks}
-              getTasksByDate={getTasksByDate}
-              onAddTask={addTask}
-              onToggle={toggleTask}
-              onUpdate={updateTask}
-              onDelete={deleteTask}
-            />
-          )}
-          {currentView === 'calendar' && (
-            <CalendarView
-              tasks={tasks}
-              onSelectDate={handleSelectDateFromCalendar}
-            />
-          )}
-          {currentView === 'report' && (
-            <MonthlyReport tasks={tasks} />
-          )}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentView}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+          >
+            {currentView === 'today' && (
+              <DailyView
+                tasks={tasks}
+                getTasksByDate={getTasksByDate}
+                onAddTask={addTask}
+                onToggle={toggleTask}
+                onUpdate={updateTask}
+                onDelete={deleteTask}
+              />
+            )}
+            {currentView === 'calendar' && (
+              <CalendarView
+                tasks={tasks}
+                onSelectDate={handleSelectDateFromCalendar}
+              />
+            )}
+            {currentView === 'report' && (
+              <MonthlyReport tasks={tasks} />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Footer */}
