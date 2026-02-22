@@ -38,6 +38,8 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showSubtasks, setShowSubtasks] = useState(false);
   const [newSubtask, setNewSubtask] = useState('');
+  const [notesExpanded, setNotesExpanded] = useState(false);
+  const NOTES_PREVIEW_LENGTH = 80;
 
   const subtasks: Subtask[] = task.subtasks || [];
   const doneSubtasks = subtasks.filter(s => s.completed).length;
@@ -129,9 +131,21 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
         </p>
 
         {task.notes && (
-          <p className="mt-1 text-xs text-gray-400 dark:text-gray-500 leading-relaxed line-clamp-2">
-            {task.notes}
-          </p>
+          <div className="mt-1">
+            <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
+              {notesExpanded || task.notes.length <= NOTES_PREVIEW_LENGTH
+                ? task.notes
+                : task.notes.slice(0, NOTES_PREVIEW_LENGTH) + '…'}
+            </p>
+            {task.notes.length > NOTES_PREVIEW_LENGTH && (
+              <button
+                onClick={e => { e.stopPropagation(); setNotesExpanded(v => !v); }}
+                className="text-[10px] text-indigo-400 hover:text-indigo-600 font-medium mt-0.5 transition-colors"
+              >
+                {notesExpanded ? 'Show less' : 'Show more'}
+              </button>
+            )}
+          </div>
         )}
 
         {(task.priority || (task.tags && task.tags.length > 0) || (!task.completed && task.date)) && (
