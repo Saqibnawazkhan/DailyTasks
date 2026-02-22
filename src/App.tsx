@@ -7,7 +7,7 @@ import { MonthlyReport } from './pages/MonthlyReport';
 import { KanbanView } from './pages/KanbanView';
 import { WeeklyView } from './pages/WeeklyView';
 import { getToday } from './utils/date';
-import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload, Focus, CalendarDays, Plus } from 'lucide-react';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload, Focus, CalendarDays, Plus, Repeat } from 'lucide-react';
 import { useThemeStore } from './store/themeStore';
 import { CommandPalette } from './components/CommandPalette';
 import { PomodoroTimer } from './components/PomodoroTimer';
@@ -15,8 +15,9 @@ import { FocusMode } from './components/FocusMode';
 import { ShortcutsModal } from './components/ShortcutsModal';
 import { useSettingsStore } from './store/settingsStore';
 import { OnboardingModal } from './components/OnboardingModal';
+import { HabitTracker } from './pages/HabitTracker';
 
-type View = 'today' | 'kanban' | 'weekly' | 'calendar' | 'report';
+type View = 'today' | 'kanban' | 'weekly' | 'calendar' | 'report' | 'habits';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('today');
@@ -141,6 +142,7 @@ function App() {
     { id: 'kanban', label: 'Board', icon: <Kanban className="w-5 h-5" /> },
     { id: 'weekly', label: 'Week', icon: <CalendarDays className="w-5 h-5" /> },
     { id: 'calendar', label: 'Calendar', icon: <Calendar className="w-5 h-5" /> },
+    { id: 'habits', label: 'Habits', icon: <Repeat className="w-5 h-5" /> },
     { id: 'report', label: 'Stats', icon: <BarChart3 className="w-5 h-5" /> }
   ];
 
@@ -275,7 +277,7 @@ function App() {
         {/* Top bar — mobile header + desktop title bar */}
         <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 sm:px-6 py-3 flex items-center justify-between shrink-0">
           <h2 className="font-semibold text-gray-800 dark:text-gray-100 text-lg capitalize">
-            {currentView === 'today' ? 'My Tasks' : currentView === 'kanban' ? 'Board' : currentView === 'weekly' ? 'Weekly View' : currentView === 'calendar' ? 'Calendar' : 'Statistics'}
+            {currentView === 'today' ? 'My Tasks' : currentView === 'kanban' ? 'Board' : currentView === 'weekly' ? 'Weekly View' : currentView === 'calendar' ? 'Calendar' : currentView === 'habits' ? 'Habit Tracker' : 'Statistics'}
           </h2>
           <div className="flex items-center gap-2">
             {/* Focus mode toggle */}
@@ -350,6 +352,7 @@ function App() {
                 {currentView === 'calendar' && (
                   <CalendarView tasks={tasks} onSelectDate={handleSelectDateFromCalendar} />
                 )}
+                {currentView === 'habits' && <HabitTracker />}
                 {currentView === 'report' && (
                   <MonthlyReport tasks={tasks} />
                 )}
