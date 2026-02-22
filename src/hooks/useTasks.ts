@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
@@ -24,6 +24,7 @@ export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const undoSnapshot = useRef<Task[] | null>(null);
 
   // Load tasks from localStorage on mount
   useEffect(() => {
@@ -110,10 +111,24 @@ export function useTasks() {
     });
   }, []);
 
+  const undoLast = useCallback(() => {
+    if (undoSnapshot.current) {
+      setTasks(undoSnapshot.current);
+      undoSnapshot.current = null;
+      toast.success('Undone!');
+    }
+  }, []);
+
   const deleteTask = useCallback(async (id: string): Promise<void> => {
     setTasks(prev => {
       const task = prev.find(t => t.id === id);
-      if (task) toast.error('Task deleted', { description: task.title });
+      if (task) {
+        undoSnapshot.current = prev;
+        toast.error('Task deleted', {
+          description: task.title,
+          action: { label: 'Undo', onClick: () => { setTasks(undoSnapshot.current ?? prev); undoSnapshot.current = null; } }
+        });
+      }
       return prev.filter(t => t.id !== id);
     });
   }, []);
@@ -169,6 +184,7 @@ export function useTasks() {
     updateTask,
     toggleTask,
     deleteTask,
+    undoLast,
     getTasksByDate,
     getTasksByMonth,
     clearError,
