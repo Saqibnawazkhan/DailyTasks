@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Task, TaskFormData } from '../types/task';
 import { TaskItem } from './TaskItem';
+import { BulkActionsBar } from './BulkActionsBar';
 import { CheckCheck, Circle, ChevronDown, Inbox } from 'lucide-react';
 
 interface TaskListProps {
@@ -21,7 +22,29 @@ const quotes = [
 
 export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet' }: TaskListProps) {
   const [showCompleted, setShowCompleted] = useState(true);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
   const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+  const toggleSelect = useCallback((id: string) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }, []);
+
+  const handleCompleteSelected = useCallback(() => {
+    selected.forEach(id => {
+      const task = tasks.find(t => t.id === id);
+      if (task && !task.completed) onToggle(id);
+    });
+    setSelected(new Set());
+  }, [selected, tasks, onToggle]);
+
+  const handleDeleteSelected = useCallback(() => {
+    selected.forEach(id => onDelete(id));
+    setSelected(new Set());
+  }, [selected, onDelete]);
 
   const pending = tasks.filter(t => !t.completed);
   const completed = tasks.filter(t => t.completed);
@@ -63,7 +86,17 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
           <AnimatePresence initial={false}>
             <div className="space-y-2">
               {pending.map(task => (
-                <TaskItem key={task.id} task={task} onToggle={onToggle} onUpdate={onUpdate} onDelete={onDelete} />
+                <div key={task.id} className="relative group/sel">
+                  <input
+                    type="checkbox"
+                    checked={selected.has(task.id)}
+                    onChange={() => toggleSelect(task.id)}
+                    className="absolute left-1 top-1/2 -translate-y-1/2 z-10 w-3.5 h-3.5 opacity-0 group-hover/sel:opacity-100 transition-opacity cursor-pointer accent-indigo-600"
+                  />
+                  <div className={`transition-all ${selected.has(task.id) ? 'ml-5' : ''}`}>
+                    <TaskItem task={task} onToggle={onToggle} onUpdate={onUpdate} onDelete={onDelete} />
+                  </div>
+                </div>
               ))}
             </div>
           </AnimatePresence>
@@ -105,6 +138,14 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
           </AnimatePresence>
         </div>
       )}
+      <BulkActionsBar
+        selected={selected}
+        total={tasks.length}
+        onSelectAll={() => setSelected(new Set(tasks.map(t => t.id)))}
+        onDeselectAll={() => setSelected(new Set())}
+        onCompleteSelected={handleCompleteSelected}
+        onDeleteSelected={handleDeleteSelected}
+      />
     </div>
   );
 }
