@@ -6,9 +6,10 @@ import { CalendarView } from './pages/CalendarView';
 import { MonthlyReport } from './pages/MonthlyReport';
 import { KanbanView } from './pages/KanbanView';
 import { getToday } from './utils/date';
-import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban } from 'lucide-react';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer } from 'lucide-react';
 import { useThemeStore } from './store/themeStore';
 import { CommandPalette } from './components/CommandPalette';
+import { PomodoroTimer } from './components/PomodoroTimer';
 
 type View = 'today' | 'kanban' | 'calendar' | 'report';
 
@@ -16,6 +17,7 @@ function App() {
   const [currentView, setCurrentView] = useState<View>('today');
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
+  const [pomodoroOpen, setPomodoroOpen] = useState(false);
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError } = useTasks();
   const { theme, setTheme } = useThemeStore();
 
@@ -196,6 +198,14 @@ function App() {
             {currentView === 'today' ? 'My Tasks' : currentView === 'kanban' ? 'Board' : currentView === 'calendar' ? 'Calendar' : 'Statistics'}
           </h2>
           <div className="flex items-center gap-2">
+            {/* Pomodoro toggle */}
+            <button
+              onClick={() => setPomodoroOpen(v => !v)}
+              title="Pomodoro Timer"
+              className={`p-2 rounded-lg transition-all hover:scale-110 ${pomodoroOpen ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'}`}
+            >
+              <Timer className="w-4 h-4" />
+            </button>
             {/* Mobile theme toggle */}
             <button
               onClick={() => setTheme(nextTheme)}
@@ -288,6 +298,11 @@ function App() {
           </button>
         ))}
       </nav>
+
+      {/* Pomodoro Timer */}
+      <AnimatePresence>
+        {pomodoroOpen && <PomodoroTimer onClose={() => setPomodoroOpen(false)} />}
+      </AnimatePresence>
 
       {/* Command Palette */}
       <CommandPalette
