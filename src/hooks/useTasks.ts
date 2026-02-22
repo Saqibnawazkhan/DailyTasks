@@ -101,6 +101,37 @@ export function useTasks() {
     setError(null);
   }, []);
 
+  const exportTasks = useCallback(() => {
+    const data = JSON.stringify(tasks, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `taskflow-export-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Tasks exported!', { description: `${tasks.length} tasks downloaded as JSON` });
+  }, [tasks]);
+
+  const importTasks = useCallback((file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const imported = JSON.parse(e.target?.result as string) as Task[];
+        if (!Array.isArray(imported)) throw new Error('Invalid format');
+        setTasks(prev => {
+          const existingIds = new Set(prev.map(t => t.id));
+          const newTasks = imported.filter(t => !existingIds.has(t.id));
+          toast.success('Tasks imported!', { description: `${newTasks.length} new tasks added` });
+          return [...prev, ...newTasks];
+        });
+      } catch {
+        toast.error('Import failed', { description: 'Invalid JSON file' });
+      }
+    };
+    reader.readAsText(file);
+  }, []);
+
   return {
     tasks,
     isLoaded,
@@ -111,6 +142,8 @@ export function useTasks() {
     deleteTask,
     getTasksByDate,
     getTasksByMonth,
-    clearError
+    clearError,
+    exportTasks,
+    importTasks
   };
 }

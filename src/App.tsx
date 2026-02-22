@@ -6,7 +6,7 @@ import { CalendarView } from './pages/CalendarView';
 import { MonthlyReport } from './pages/MonthlyReport';
 import { KanbanView } from './pages/KanbanView';
 import { getToday } from './utils/date';
-import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer } from 'lucide-react';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload } from 'lucide-react';
 import { useThemeStore } from './store/themeStore';
 import { CommandPalette } from './components/CommandPalette';
 import { PomodoroTimer } from './components/PomodoroTimer';
@@ -18,7 +18,7 @@ function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [pomodoroOpen, setPomodoroOpen] = useState(false);
-  const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError } = useTasks();
+  const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError, exportTasks, importTasks } = useTasks();
   const { theme, setTheme } = useThemeStore();
 
   // Scroll to top button visibility
@@ -170,6 +170,24 @@ function App() {
             </div>
           </div>
         )}
+
+        {/* Export / Import */}
+        <div className="px-3 pb-2 flex gap-2">
+          <button
+            onClick={exportTasks}
+            title="Export tasks as JSON"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all"
+          >
+            <Download className="w-3.5 h-3.5" /> Export
+          </button>
+          <label
+            title="Import tasks from JSON"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all cursor-pointer"
+          >
+            <Upload className="w-3.5 h-3.5" /> Import
+            <input type="file" accept=".json" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) { importTasks(f); e.target.value = ''; } }} />
+          </label>
+        </div>
 
         {/* Theme toggle */}
         <div className="px-3 pb-4 flex items-center gap-2">
