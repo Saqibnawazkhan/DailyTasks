@@ -7,7 +7,7 @@ import { MonthlyReport } from './pages/MonthlyReport';
 import { KanbanView } from './pages/KanbanView';
 import { WeeklyView } from './pages/WeeklyView';
 import { getToday } from './utils/date';
-import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload, Focus, CalendarDays, Plus, Repeat } from 'lucide-react';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload, Focus, CalendarDays, Plus, Repeat, Bell, BellOff } from 'lucide-react';
 import { useThemeStore } from './store/themeStore';
 import { CommandPalette } from './components/CommandPalette';
 import { PomodoroTimer } from './components/PomodoroTimer';
@@ -16,6 +16,7 @@ import { ShortcutsModal } from './components/ShortcutsModal';
 import { useSettingsStore } from './store/settingsStore';
 import { OnboardingModal } from './components/OnboardingModal';
 import { HabitTracker } from './pages/HabitTracker';
+import { useNotifications } from './hooks/useNotifications';
 
 type View = 'today' | 'kanban' | 'weekly' | 'calendar' | 'report' | 'habits';
 
@@ -30,6 +31,7 @@ function App() {
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError, exportTasks, importTasks } = useTasks();
   const { theme, setTheme } = useThemeStore();
   const { soundEnabled, setSoundEnabled } = useSettingsStore();
+  const { permission: notifPermission, requestPermission, notifyDueToday } = useNotifications(tasks);
 
   // Scroll to top button visibility
   useEffect(() => {
@@ -241,7 +243,7 @@ function App() {
           </label>
         </div>
 
-        {/* Sound toggle */}
+        {/* Sound + Notifications */}
         <div className="px-3 pb-2 flex items-center gap-2">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
@@ -250,6 +252,13 @@ function App() {
             }`}
           >
             {soundEnabled ? '🔊 Sound On' : '🔇 Sound Off'}
+          </button>
+          <button
+            onClick={() => notifPermission === 'granted' ? notifyDueToday() : requestPermission()}
+            title={notifPermission === 'granted' ? 'Notify due today' : 'Enable notifications'}
+            className={`p-2 rounded-lg text-xs font-medium transition-all ${notifPermission === 'granted' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400' : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+          >
+            {notifPermission === 'granted' ? <Bell className="w-3.5 h-3.5" /> : <BellOff className="w-3.5 h-3.5" />}
           </button>
         </div>
 
