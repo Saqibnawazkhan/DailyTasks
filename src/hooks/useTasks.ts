@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
+import confetti from 'canvas-confetti';
 import { Task, TaskFormData } from '../types/task';
 import { loadTasks, saveTasks } from '../utils/storage';
 
@@ -77,6 +78,16 @@ export function useTasks() {
         if (newCompleted) toast.success('Task completed! 🎉', { description: task.title });
         return { ...task, completed: newCompleted, completedAt: newCompleted ? now : null, updatedAt: now };
       });
+
+      // Fire confetti if all tasks are now done
+      const allDone = updated.length > 0 && updated.every(t => t.completed);
+      if (allDone) {
+        setTimeout(() => {
+          confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'] });
+        }, 200);
+        toast.success('All tasks done! 🎊', { description: 'Incredible work today!' });
+      }
+
       return updated;
     });
   }, []);
