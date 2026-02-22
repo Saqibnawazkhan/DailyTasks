@@ -1,5 +1,8 @@
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Task, TaskFormData } from '../types/task';
 import { TaskItem } from './TaskItem';
+import { CheckCheck, Circle, ChevronDown, Inbox } from 'lucide-react';
 
 interface TaskListProps {
   tasks: Task[];
@@ -9,101 +12,97 @@ interface TaskListProps {
   emptyMessage?: string;
 }
 
-const motivationalQuotes = [
-    { quote: "The secret of getting ahead is getting started.", author: "Mark Twain" },
-    { quote: "Small progress is still progress.", author: "Unknown" },
-    { quote: "Done is better than perfect.", author: "Sheryl Sandberg" },
-    { quote: "Focus on being productive instead of busy.", author: "Tim Ferriss" },
-    { quote: "Action is the foundational key to all success.", author: "Pablo Picasso" },
-  ];
+const quotes = [
+  { quote: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+  { quote: "Small progress is still progress.", author: "Unknown" },
+  { quote: "Done is better than perfect.", author: "Sheryl Sandberg" },
+  { quote: "Focus on being productive instead of busy.", author: "Tim Ferriss" },
+];
 
 export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet' }: TaskListProps) {
-  const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  const [showCompleted, setShowCompleted] = useState(true);
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+  const pending = tasks.filter(t => !t.completed);
+  const completed = tasks.filter(t => t.completed);
 
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-16 bg-white rounded-3xl border-2 border-dashed border-indigo-300 hover:border-indigo-400 transition-all duration-500 hover:shadow-lg group">
-        <div className="w-24 h-24 bg-indigo-100 rounded-3xl flex items-center justify-center mx-auto mb-6 animate-bounce group-hover:animate-wobble">
-          <span className="text-5xl">📝</span>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col items-center justify-center py-16 px-6 text-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/20"
+      >
+        <div className="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center mb-4">
+          <Inbox className="w-7 h-7 text-indigo-400 dark:text-indigo-500" />
         </div>
-        <p className="text-gray-800 font-bold text-xl mb-2">{emptyMessage}</p>
-        <p className="text-gray-600 mb-4">Your productivity journey starts here!</p>
-        <div className="max-w-md mx-auto px-6 py-4 bg-indigo-50 rounded-2xl mb-4 border border-indigo-200">
-          <p className="text-indigo-800 italic text-sm">"{randomQuote.quote}"</p>
-          <p className="text-indigo-600 text-xs mt-1 font-medium">— {randomQuote.author}</p>
-        </div>
-        <div className="flex justify-center gap-2 text-sm text-gray-600">
-          <span className="px-3 py-1 bg-gray-100 rounded-full border border-gray-200">✨ Stay organized</span>
-          <span className="px-3 py-1 bg-gray-100 rounded-full border border-gray-200">🎯 Track progress</span>
-          <span className="px-3 py-1 bg-gray-100 rounded-full border border-gray-200">🚀 Get things done</span>
-        </div>
-      </div>
+        <p className="font-semibold text-gray-700 dark:text-gray-300 mb-1">{emptyMessage}</p>
+        <p className="text-sm text-gray-400 dark:text-gray-500 mb-5">Add your first task above to get started</p>
+        <blockquote className="max-w-xs text-center">
+          <p className="text-sm text-gray-500 dark:text-gray-400 italic">"{quote.quote}"</p>
+          <footer className="text-xs text-gray-400 dark:text-gray-500 mt-1">— {quote.author}</footer>
+        </blockquote>
+      </motion.div>
     );
   }
 
-  const pendingTasks = tasks.filter(t => !t.completed);
-  const completedTasks = tasks.filter(t => t.completed);
-
   return (
-    <div className="space-y-6">
-      {pendingTasks.length > 0 && (
+    <div className="space-y-5">
+      {/* Pending section */}
+      {pending.length > 0 && (
         <div>
-          <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+          <div className="flex items-center gap-2 mb-3">
+            <Circle className="w-3.5 h-3.5 text-indigo-400" />
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              In progress
             </span>
-            Pending
-            <span className="text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-2.5 py-1 rounded-full shadow-sm">
-              {pendingTasks.length}
+            <span className="ml-1 text-xs font-bold text-white bg-indigo-500 px-2 py-0.5 rounded-full">
+              {pending.length}
             </span>
-          </h3>
-          <div className="space-y-3">
-            {pendingTasks.map((task, index) => (
-              <div
-                key={task.id}
-                style={{ animationDelay: `${index * 50}ms` }}
-                className="animate-fade-in"
-              >
-                <TaskItem
-                  task={task}
-                  onToggle={onToggle}
-                  onUpdate={onUpdate}
-                  onDelete={onDelete}
-                />
-              </div>
-            ))}
           </div>
+          <AnimatePresence initial={false}>
+            <div className="space-y-2">
+              {pending.map(task => (
+                <TaskItem key={task.id} task={task} onToggle={onToggle} onUpdate={onUpdate} onDelete={onDelete} />
+              ))}
+            </div>
+          </AnimatePresence>
         </div>
       )}
 
-      {completedTasks.length > 0 && (
+      {/* Completed section */}
+      {completed.length > 0 && (
         <div>
-          <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-            <span className="relative flex h-3 w-3">
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          <button
+            onClick={() => setShowCompleted(v => !v)}
+            className="flex items-center gap-2 mb-3 group"
+          >
+            <CheckCheck className="w-3.5 h-3.5 text-emerald-500" />
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              Completed
             </span>
-            Completed ✨
-            <span className="text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-2.5 py-1 rounded-full shadow-sm">
-              {completedTasks.length}
+            <span className="ml-1 text-xs font-bold text-white bg-emerald-500 px-2 py-0.5 rounded-full">
+              {completed.length}
             </span>
-          </h3>
-          <div className="space-y-3">
-            {completedTasks.map((task, index) => (
-              <div
-                key={task.id}
-                style={{ animationDelay: `${index * 50}ms` }}
-                className="animate-fade-in"
+            <ChevronDown className={`w-3.5 h-3.5 text-gray-400 ml-auto transition-transform duration-200 ${showCompleted ? '' : '-rotate-90'}`} />
+          </button>
+          <AnimatePresence>
+            {showCompleted && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
               >
-                <TaskItem
-                  task={task}
-                  onToggle={onToggle}
-                  onUpdate={onUpdate}
-                  onDelete={onDelete}
-                />
-              </div>
-            ))}
-          </div>
+                <div className="space-y-2">
+                  {completed.map(task => (
+                    <TaskItem key={task.id} task={task} onToggle={onToggle} onUpdate={onUpdate} onDelete={onDelete} />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
     </div>
