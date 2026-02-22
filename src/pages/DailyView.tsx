@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Task, TaskFormData } from '../types/task';
 import { TaskForm } from '../components/TaskForm';
 import { TaskList } from '../components/TaskList';
+import { SearchBar } from '../components/SearchBar';
 import { getToday, formatDisplayDate } from '../utils/date';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 
@@ -26,8 +27,15 @@ interface DailyViewProps {
 export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDelete }: DailyViewProps) {
   const [selectedDate, setSelectedDate] = useState(getToday());
   const [showForm, setShowForm] = useState(true);
+  const [search, setSearch] = useState('');
 
   const dayTasks = getTasksByDate(selectedDate);
+  const filteredTasks = useMemo(() =>
+    search.trim()
+      ? dayTasks.filter(t => t.title.toLowerCase().includes(search.toLowerCase()) || t.notes?.toLowerCase().includes(search.toLowerCase()) || t.tags?.some(tag => tag.toLowerCase().includes(search.toLowerCase())))
+      : dayTasks,
+    [dayTasks, search]
+  );
   const isToday = selectedDate === getToday();
   const completedCount = dayTasks.filter(t => t.completed).length;
   const progress = dayTasks.length > 0 ? Math.round((completedCount / dayTasks.length) * 100) : 0;
@@ -144,11 +152,17 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
       </div>
 
       {/* Task List */}
+      {/* Search */}
+      {dayTasks.length > 0 && (
+        <SearchBar value={search} onChange={setSearch} placeholder="Search tasks… (⌘K)" />
+      )}
+
       <TaskList
-        tasks={dayTasks}
+        tasks={filteredTasks}
         onToggle={onToggle}
         onUpdate={onUpdate}
         onDelete={onDelete}
+        emptyMessage={search ? 'No tasks match your search' : 'No tasks yet'}
       />
 
       {/* Progress Stats */}
