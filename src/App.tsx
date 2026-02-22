@@ -152,12 +152,12 @@ function App() {
   const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300 overflow-hidden">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300 overflow-hidden" role="application" aria-label="TaskFlow task manager">
       {/* Sidebar — desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shrink-0">
+      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shrink-0" aria-label="Sidebar">
         {/* Logo */}
         <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100 dark:border-gray-800">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900" aria-hidden="true">
             <Zap className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -167,21 +167,23 @@ function App() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
+        <nav className="flex-1 px-3 py-4 space-y-1" aria-label="Main navigation">
           {navItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
+              aria-current={currentView === item.id ? 'page' : undefined}
+              aria-label={`${item.label}${item.id === 'today' && todayTaskCount > 0 ? `, ${todayTaskCount} pending` : ''}`}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 currentView === item.id
                   ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-indigo-900'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
-              {item.icon}
+              <span aria-hidden="true">{item.icon}</span>
               <span>{item.label}</span>
               {item.id === 'today' && todayTaskCount > 0 && (
-                <span className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-full ${
+                <span aria-hidden="true" className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-full ${
                   currentView === item.id ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-600 dark:bg-rose-900/40 dark:text-rose-400'
                 }`}>{todayTaskCount}</span>
               )}

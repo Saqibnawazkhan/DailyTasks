@@ -21,9 +21,11 @@ export function BulkActionsBar({ selected, total, onSelectAll, onDeselectAll, on
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 16 }}
           transition={{ duration: 0.18 }}
+          role="toolbar"
+          aria-label={`${count} task${count !== 1 ? 's' : ''} selected`}
           className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl shadow-2xl border border-gray-700 dark:border-gray-200"
         >
-          <span className="text-sm font-semibold mr-1">{count} selected</span>
+          <span className="text-sm font-semibold mr-1" aria-live="polite">{count} selected</span>
           <div className="w-px h-4 bg-gray-600 dark:bg-gray-300" />
           {count < total && (
             <button onClick={onSelectAll} className="text-xs px-2 py-1 rounded-lg hover:bg-white/10 dark:hover:bg-black/10 transition-colors">

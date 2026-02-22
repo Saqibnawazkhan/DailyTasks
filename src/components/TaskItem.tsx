@@ -97,6 +97,8 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.18 }}
+      role="article"
+      aria-label={`${task.title}${task.completed ? ', completed' : ''}${task.priority ? `, ${task.priority} priority` : ''}`}
       className={`group relative flex items-start gap-3 p-4 rounded-2xl border transition-all duration-200 ${
         task.completed
           ? 'bg-gray-50 dark:bg-gray-800/40 border-gray-100 dark:border-gray-800 opacity-60'
