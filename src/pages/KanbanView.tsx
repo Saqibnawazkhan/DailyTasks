@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Task, TaskFormData } from '../types/task';
 import { Check, Trash2, Flag, Circle, AlertCircle, CheckCircle2 } from 'lucide-react';
@@ -25,7 +25,7 @@ interface Column {
   filter: (t: Task) => boolean;
 }
 
-export function KanbanView({ tasks, onToggle, onDelete }: KanbanViewProps) {
+export const KanbanView = memo(function KanbanView({ tasks, onToggle, onDelete }: KanbanViewProps) {
   const columns: Column[] = useMemo(() => [
     {
       id: 'todo',
@@ -168,4 +168,4 @@ export function KanbanView({ tasks, onToggle, onDelete }: KanbanViewProps) {
       </div>
     </div>
   );
-}
+});

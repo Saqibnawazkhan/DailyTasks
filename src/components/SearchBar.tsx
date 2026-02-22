@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, memo } from 'react';
 import { Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -8,7 +8,7 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-export function SearchBar({ value, onChange, placeholder = 'Search tasks…' }: SearchBarProps) {
+export const SearchBar = memo(function SearchBar({ value, onChange, placeholder = 'Search tasks…' }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Cmd/Ctrl+K focuses search
@@ -49,4 +49,4 @@ export function SearchBar({ value, onChange, placeholder = 'Search tasks…' }: 
       </AnimatePresence>
     </div>
   );
-}
+});

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Task, TaskFormData, Subtask } from '../types/task';
@@ -37,7 +37,7 @@ const TASK_COLOR_HEX: Record<string, string> = {
   teal: '#14b8a6', blue: '#3b82f6', purple: '#a855f7', pink: '#ec4899',
 };
 
-export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) {
+export const TaskItem = memo(function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -324,4 +324,4 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
       </AnimatePresence>
     </motion.div>
   );
-}
+});
