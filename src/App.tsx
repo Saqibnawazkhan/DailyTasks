@@ -162,21 +162,30 @@ function App() {
           ))}
         </nav>
 
-        {/* Task counter */}
-        {tasks.length > 0 && (
-          <div className="px-4 py-3 mx-3 mb-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800">
-            <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Overall Progress</p>
-            <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300 mt-0.5">
-              {tasks.filter(t => t.completed).length} / {tasks.length}
-            </p>
-            <div className="mt-2 h-1.5 bg-indigo-100 dark:bg-indigo-900 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-indigo-500 rounded-full transition-all duration-500"
-                style={{ width: `${tasks.length ? Math.round((tasks.filter(t => t.completed).length / tasks.length) * 100) : 0}%` }}
-              />
+        {/* Productivity score */}
+        {tasks.length > 0 && (() => {
+          const done = tasks.filter(t => t.completed).length;
+          const total = tasks.length;
+          const pct = Math.round((done / total) * 100);
+          const highDone = tasks.filter(t => t.completed && t.priority === 'high').length;
+          const highTotal = tasks.filter(t => t.priority === 'high').length;
+          const score = Math.min(100, Math.round(pct * 0.6 + (highTotal > 0 ? (highDone / highTotal) * 100 * 0.4 : pct * 0.4)));
+          const grade = score >= 90 ? 'S' : score >= 75 ? 'A' : score >= 60 ? 'B' : score >= 40 ? 'C' : 'D';
+          const gradeColor = score >= 90 ? 'text-emerald-500' : score >= 75 ? 'text-indigo-500' : score >= 60 ? 'text-amber-500' : 'text-rose-500';
+          return (
+            <div className="px-4 py-3 mx-3 mb-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800">
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Productivity Score</p>
+                <span className={`text-lg font-black ${gradeColor}`}>{grade}</span>
+              </div>
+              <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300">{score}<span className="text-xs font-medium text-indigo-400">/100</span></p>
+              <div className="mt-2 h-1.5 bg-indigo-100 dark:bg-indigo-900 rounded-full overflow-hidden">
+                <div className="h-full bg-indigo-500 rounded-full transition-all duration-700" style={{ width: `${score}%` }} />
+              </div>
+              <p className="text-[10px] text-indigo-400 mt-1">{done}/{total} tasks · {highDone}/{highTotal || 0} high-priority</p>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Export / Import */}
         <div className="px-3 pb-2 flex gap-2">
