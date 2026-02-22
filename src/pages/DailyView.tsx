@@ -45,14 +45,25 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
   const [showForm, setShowForm] = useState(true);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortOption>('default');
+  const [activeTag, setActiveTag] = useState<string | null>(null);
 
   const dayTasks = getTasksByDate(selectedDate);
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    dayTasks.forEach(t => t.tags?.forEach(tag => tagSet.add(tag)));
+    return [...tagSet];
+  }, [dayTasks]);
+
   const filteredTasks = useMemo(() => {
-    const filtered = search.trim()
-      ? dayTasks.filter(t => t.title.toLowerCase().includes(search.toLowerCase()) || t.notes?.toLowerCase().includes(search.toLowerCase()) || t.tags?.some(tag => tag.toLowerCase().includes(search.toLowerCase())))
-      : dayTasks;
+    let filtered = dayTasks;
+    if (search.trim()) {
+      filtered = filtered.filter(t => t.title.toLowerCase().includes(search.toLowerCase()) || t.notes?.toLowerCase().includes(search.toLowerCase()) || t.tags?.some(tag => tag.toLowerCase().includes(search.toLowerCase())));
+    }
+    if (activeTag) {
+      filtered = filtered.filter(t => t.tags?.includes(activeTag));
+    }
     return sortTasks(filtered, sort);
-  }, [dayTasks, search, sort]);
+  }, [dayTasks, search, sort, activeTag]);
   const isToday = selectedDate === getToday();
   const completedCount = dayTasks.filter(t => t.completed).length;
   const progress = dayTasks.length > 0 ? Math.round((completedCount / dayTasks.length) * 100) : 0;
@@ -153,6 +164,27 @@ export function DailyView({ getTasksByDate, onAddTask, onToggle, onUpdate, onDel
           </div>
         )}
       </div>
+
+      {/* Tag filter pills */}
+      {allTags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => setActiveTag(null)}
+            className={`text-xs px-3 py-1 rounded-full font-medium transition-all ${!activeTag ? 'bg-indigo-600 text-white shadow-sm' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+          >
+            All
+          </button>
+          {allTags.map(tag => (
+            <button
+              key={tag}
+              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+              className={`text-xs px-3 py-1 rounded-full font-medium transition-all ${activeTag === tag ? 'bg-indigo-600 text-white shadow-sm' : 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50'}`}
+            >
+              #{tag}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Search + Sort */}
       {dayTasks.length > 0 && (
