@@ -3,7 +3,22 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Task, TaskFormData } from '../types/task';
 import { TaskItem } from './TaskItem';
 import { BulkActionsBar } from './BulkActionsBar';
-import { CheckCheck, Circle, ChevronDown, Inbox } from 'lucide-react';
+import { CheckCheck, Circle, ChevronDown, Inbox, GripVertical } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+  arrayMove,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface TaskListProps {
   tasks: Task[];
@@ -20,24 +35,85 @@ const quotes = [
   { quote: "Focus on being productive instead of busy.", author: "Tim Ferriss" },
 ];
 
+function SortableTaskRow({
+  task, selected, onSelect, onToggle, onUpdate, onDelete
+}: {
+  task: Task;
+  selected: boolean;
+  onSelect: () => void;
+  onToggle: (id: string) => void;
+  onUpdate: (id: string, updates: Partial<TaskFormData>) => void;
+  onDelete: (id: string) => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.id });
+  const style = { transform: CSS.Transform.toString(transform), transition, zIndex: isDragging ? 50 : undefined };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`relative group/sel flex items-center gap-1 ${isDragging ? 'opacity-50' : ''}`}
+    >
+      {/* Drag handle */}
+      <button
+        {...attributes}
+        {...listeners}
+        className="opacity-0 group-hover/sel:opacity-100 p-1 text-gray-300 dark:text-gray-600 hover:text-gray-500 cursor-grab active:cursor-grabbing transition-opacity shrink-0 touch-none"
+        tabIndex={-1}
+      >
+        <GripVertical className="w-4 h-4" />
+      </button>
+
+      {/* Selection checkbox */}
+      <input
+        type="checkbox"
+        checked={selected}
+        onChange={onSelect}
+        className="w-3.5 h-3.5 opacity-0 group-hover/sel:opacity-100 transition-opacity cursor-pointer accent-indigo-600 shrink-0"
+      />
+
+      <div className={`flex-1 transition-all ${selected ? '' : ''}`}>
+        <TaskItem task={task} onToggle={onToggle} onUpdate={onUpdate} onDelete={onDelete} />
+      </div>
+    </div>
+  );
+}
+
 export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = 'No tasks yet' }: TaskListProps) {
   const [showCompleted, setShowCompleted] = useState(true);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [orderedPending, setOrderedPending] = useState<Task[]>(() => tasks.filter(t => !t.completed));
   const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
+  const pending = tasks.filter(t => !t.completed);
+  const completed = tasks.filter(t => t.completed);
+
+  // Keep orderedPending in sync when tasks change from outside
+  const syncedPending = orderedPending
+    .filter(op => pending.some(p => p.id === op.id))
+    .map(op => pending.find(p => p.id === op.id)!)
+    .concat(pending.filter(p => !orderedPending.some(op => op.id === p.id)));
+
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setOrderedPending(() => {
+        const ids = syncedPending.map(t => t.id);
+        const oldIdx = ids.indexOf(String(active.id));
+        const newIdx = ids.indexOf(String(over.id));
+        return arrayMove(syncedPending, oldIdx, newIdx);
+      });
+    }
+  }, [syncedPending]);
+
   const toggleSelect = useCallback((id: string) => {
-    setSelected(prev => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
+    setSelected(prev => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; });
   }, []);
 
   const handleCompleteSelected = useCallback(() => {
-    selected.forEach(id => {
-      const task = tasks.find(t => t.id === id);
-      if (task && !task.completed) onToggle(id);
-    });
+    selected.forEach(id => { const task = tasks.find(t => t.id === id); if (task && !task.completed) onToggle(id); });
     setSelected(new Set());
   }, [selected, tasks, onToggle]);
 
@@ -45,9 +121,6 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
     selected.forEach(id => onDelete(id));
     setSelected(new Set());
   }, [selected, onDelete]);
-
-  const pending = tasks.filter(t => !t.completed);
-  const completed = tasks.filter(t => t.completed);
 
   if (tasks.length === 0) {
     return (
@@ -71,52 +144,43 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
 
   return (
     <div className="space-y-5">
-      {/* Pending section */}
-      {pending.length > 0 && (
+      {/* Pending section with DnD */}
+      {syncedPending.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Circle className="w-3.5 h-3.5 text-indigo-400" />
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              In progress
-            </span>
-            <span className="ml-1 text-xs font-bold text-white bg-indigo-500 px-2 py-0.5 rounded-full">
-              {pending.length}
-            </span>
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">In progress</span>
+            <span className="ml-1 text-xs font-bold text-white bg-indigo-500 px-2 py-0.5 rounded-full">{syncedPending.length}</span>
           </div>
-          <AnimatePresence initial={false}>
-            <div className="space-y-2">
-              {pending.map(task => (
-                <div key={task.id} className="relative group/sel">
-                  <input
-                    type="checkbox"
-                    checked={selected.has(task.id)}
-                    onChange={() => toggleSelect(task.id)}
-                    className="absolute left-1 top-1/2 -translate-y-1/2 z-10 w-3.5 h-3.5 opacity-0 group-hover/sel:opacity-100 transition-opacity cursor-pointer accent-indigo-600"
-                  />
-                  <div className={`transition-all ${selected.has(task.id) ? 'ml-5' : ''}`}>
-                    <TaskItem task={task} onToggle={onToggle} onUpdate={onUpdate} onDelete={onDelete} />
-                  </div>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={syncedPending.map(t => t.id)} strategy={verticalListSortingStrategy}>
+              <AnimatePresence initial={false}>
+                <div className="space-y-2">
+                  {syncedPending.map(task => (
+                    <SortableTaskRow
+                      key={task.id}
+                      task={task}
+                      selected={selected.has(task.id)}
+                      onSelect={() => toggleSelect(task.id)}
+                      onToggle={onToggle}
+                      onUpdate={onUpdate}
+                      onDelete={onDelete}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </AnimatePresence>
+              </AnimatePresence>
+            </SortableContext>
+          </DndContext>
         </div>
       )}
 
       {/* Completed section */}
       {completed.length > 0 && (
         <div>
-          <button
-            onClick={() => setShowCompleted(v => !v)}
-            className="flex items-center gap-2 mb-3 group"
-          >
+          <button onClick={() => setShowCompleted(v => !v)} className="flex items-center gap-2 mb-3 group">
             <CheckCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              Completed
-            </span>
-            <span className="ml-1 text-xs font-bold text-white bg-emerald-500 px-2 py-0.5 rounded-full">
-              {completed.length}
-            </span>
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Completed</span>
+            <span className="ml-1 text-xs font-bold text-white bg-emerald-500 px-2 py-0.5 rounded-full">{completed.length}</span>
             <ChevronDown className={`w-3.5 h-3.5 text-gray-400 ml-auto transition-transform duration-200 ${showCompleted ? '' : '-rotate-90'}`} />
           </button>
           <AnimatePresence>
@@ -138,6 +202,7 @@ export function TaskList({ tasks, onToggle, onUpdate, onDelete, emptyMessage = '
           </AnimatePresence>
         </div>
       )}
+
       <BulkActionsBar
         selected={selected}
         total={tasks.length}
