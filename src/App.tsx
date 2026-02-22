@@ -7,7 +7,7 @@ import { MonthlyReport } from './pages/MonthlyReport';
 import { KanbanView } from './pages/KanbanView';
 import { WeeklyView } from './pages/WeeklyView';
 import { getToday } from './utils/date';
-import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload, Focus, CalendarDays } from 'lucide-react';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban, Timer, Download, Upload, Focus, CalendarDays, Plus } from 'lucide-react';
 import { useThemeStore } from './store/themeStore';
 import { CommandPalette } from './components/CommandPalette';
 import { PomodoroTimer } from './components/PomodoroTimer';
@@ -337,6 +337,22 @@ function App() {
             </AnimatePresence>
           </div>
         </main>
+
+        {/* Mobile FAB — quick add */}
+        {currentView === 'today' && (
+          <button
+            onClick={() => {
+              setTimeout(() => {
+                const input = document.querySelector('input[placeholder*="What needs to be done"]') as HTMLInputElement;
+                if (input) { input.focus(); input.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+              }, 100);
+            }}
+            className="md:hidden fixed bottom-20 right-4 z-40 w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
+            aria-label="Add task"
+          >
+            <Plus className="w-6 h-6" />
+          </button>
+        )}
 
         {/* Scroll to top */}
         {showScrollTop && (
