@@ -8,12 +8,14 @@ import { KanbanView } from './pages/KanbanView';
 import { getToday } from './utils/date';
 import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban } from 'lucide-react';
 import { useThemeStore } from './store/themeStore';
+import { CommandPalette } from './components/CommandPalette';
 
 type View = 'today' | 'kanban' | 'calendar' | 'report';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('today');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [cmdOpen, setCmdOpen] = useState(false);
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError } = useTasks();
   const { theme, setTheme } = useThemeStore();
 
@@ -33,10 +35,12 @@ function App() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'p') { e.preventDefault(); setCmdOpen(v => !v); return; }
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
       if (e.key === '1') setCurrentView('today');
-      if (e.key === '2') setCurrentView('calendar');
-      if (e.key === '3') setCurrentView('report');
+      if (e.key === '2') setCurrentView('kanban');
+      if (e.key === '3') setCurrentView('calendar');
+      if (e.key === '4') setCurrentView('report');
       // Quick add shortcut - 'n' for new task
       if (e.key === 'n' || e.key === 'N') {
         setCurrentView('today');
@@ -284,6 +288,15 @@ function App() {
           </button>
         ))}
       </nav>
+
+      {/* Command Palette */}
+      <CommandPalette
+        open={cmdOpen}
+        onClose={() => setCmdOpen(false)}
+        tasks={tasks}
+        onNavigate={(view) => setCurrentView(view as View)}
+        onToggleTask={toggleTask}
+      />
     </div>
   );
 }
