@@ -11,6 +11,7 @@ import { useThemeStore } from './store/themeStore';
 import { CommandPalette } from './components/CommandPalette';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { FocusMode } from './components/FocusMode';
+import { ShortcutsModal } from './components/ShortcutsModal';
 
 type View = 'today' | 'kanban' | 'calendar' | 'report';
 
@@ -20,6 +21,7 @@ function App() {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [pomodoroOpen, setPomodoroOpen] = useState(false);
   const [focusOpen, setFocusOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const { tasks, isLoaded, error, addTask, updateTask, toggleTask, deleteTask, getTasksByDate, clearError, exportTasks, importTasks } = useTasks();
   const { theme, setTheme } = useThemeStore();
 
@@ -53,6 +55,7 @@ function App() {
           if (input) input.focus();
         }, 100);
       }
+      if (e.key === '?') setShortcutsOpen(v => !v);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -331,6 +334,9 @@ function App() {
       <AnimatePresence>
         {focusOpen && <FocusMode tasks={tasks} onClose={() => setFocusOpen(false)} onToggle={toggleTask} />}
       </AnimatePresence>
+
+      {/* Shortcuts Modal */}
+      <ShortcutsModal open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
 
       {/* Pomodoro Timer */}
       <AnimatePresence>
