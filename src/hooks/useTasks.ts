@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'sonner';
 import { Task, TaskFormData } from '../types/task';
 import { loadTasks, saveTasks } from '../utils/storage';
 
@@ -44,6 +45,7 @@ export function useTasks() {
     };
 
     setTasks(prev => [...prev, newTask]);
+    toast.success('Task added!', { description: newTask.title });
     return newTask;
   }, []);
 
@@ -68,21 +70,23 @@ export function useTasks() {
   const toggleTask = useCallback(async (id: string): Promise<void> => {
     const now = new Date().toISOString();
 
-    setTasks(prev => prev.map(task => {
-      if (task.id !== id) return task;
-
-      const newCompleted = !task.completed;
-      return {
-        ...task,
-        completed: newCompleted,
-        completedAt: newCompleted ? now : null,
-        updatedAt: now
-      };
-    }));
+    setTasks(prev => {
+      const updated = prev.map(task => {
+        if (task.id !== id) return task;
+        const newCompleted = !task.completed;
+        if (newCompleted) toast.success('Task completed! 🎉', { description: task.title });
+        return { ...task, completed: newCompleted, completedAt: newCompleted ? now : null, updatedAt: now };
+      });
+      return updated;
+    });
   }, []);
 
   const deleteTask = useCallback(async (id: string): Promise<void> => {
-    setTasks(prev => prev.filter(task => task.id !== id));
+    setTasks(prev => {
+      const task = prev.find(t => t.id === id);
+      if (task) toast.error('Task deleted', { description: task.title });
+      return prev.filter(t => t.id !== id);
+    });
   }, []);
 
   const getTasksByDate = useCallback((date: string): Task[] => {
