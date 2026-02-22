@@ -3,7 +3,7 @@ import { Task, Priority } from '../types/task';
 import { generateMonthlyReport, getCompletionGrade } from '../utils/report';
 import { formatMonthYear, formatDisplayDate, getMonthsList } from '../utils/date';
 import { ClipboardList, CheckCircle, Clock, TrendingUp, BarChart3 } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
 
 interface MonthlyReportProps {
   tasks: Task[];
@@ -233,6 +233,31 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
           </div>
         </div>
       )}
+
+      {/* Priority Pie Chart */}
+      {filteredTasks.length > 0 && (() => {
+        const pieData = [
+          { name: 'High', value: filteredTasks.filter(t => t.priority === 'high').length, color: '#f43f5e' },
+          { name: 'Medium', value: filteredTasks.filter(t => t.priority === 'medium').length, color: '#f59e0b' },
+          { name: 'Low', value: filteredTasks.filter(t => t.priority === 'low').length, color: '#10b981' },
+          { name: 'None', value: filteredTasks.filter(t => !t.priority).length, color: '#6b7280' },
+        ].filter(d => d.value > 0);
+        if (pieData.length === 0) return null;
+        return (
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-5">
+            <h3 className="text-base font-bold text-gray-900 dark:text-white mb-4">Priority Distribution</h3>
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={3} dataKey="value">
+                  {pieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                </Pie>
+                <Tooltip contentStyle={{ background: '#1f2937', border: 'none', borderRadius: 12, fontSize: 12, color: '#f9fafb' }} />
+                <Legend iconType="circle" iconSize={8} formatter={(v) => <span className="text-xs text-gray-600 dark:text-gray-400">{v}</span>} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        );
+      })()}
 
       {/* Daily Breakdown */}
       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
