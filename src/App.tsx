@@ -4,11 +4,12 @@ import { useTasks } from './hooks/useTasks';
 import { DailyView } from './pages/DailyView';
 import { CalendarView } from './pages/CalendarView';
 import { MonthlyReport } from './pages/MonthlyReport';
+import { KanbanView } from './pages/KanbanView';
 import { getToday } from './utils/date';
-import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor } from 'lucide-react';
+import { CheckCircle, Calendar, BarChart3, Zap, ChevronUp, AlertTriangle, X, Sun, Moon, Monitor, Kanban } from 'lucide-react';
 import { useThemeStore } from './store/themeStore';
 
-type View = 'today' | 'calendar' | 'report';
+type View = 'today' | 'kanban' | 'calendar' | 'report';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('today');
@@ -102,6 +103,7 @@ function App() {
 
   const navItems: { id: View; label: string; icon: React.ReactNode }[] = [
     { id: 'today', label: 'Tasks', icon: <CheckCircle className="w-5 h-5" /> },
+    { id: 'kanban', label: 'Board', icon: <Kanban className="w-5 h-5" /> },
     { id: 'calendar', label: 'Calendar', icon: <Calendar className="w-5 h-5" /> },
     { id: 'report', label: 'Stats', icon: <BarChart3 className="w-5 h-5" /> }
   ];
@@ -187,7 +189,7 @@ function App() {
         {/* Top bar — mobile header + desktop title bar */}
         <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 sm:px-6 py-3 flex items-center justify-between shrink-0">
           <h2 className="font-semibold text-gray-800 dark:text-gray-100 text-lg capitalize">
-            {currentView === 'today' ? 'My Tasks' : currentView === 'calendar' ? 'Calendar' : 'Statistics'}
+            {currentView === 'today' ? 'My Tasks' : currentView === 'kanban' ? 'Board' : currentView === 'calendar' ? 'Calendar' : 'Statistics'}
           </h2>
           <div className="flex items-center gap-2">
             {/* Mobile theme toggle */}
@@ -227,6 +229,14 @@ function App() {
                     tasks={tasks}
                     getTasksByDate={getTasksByDate}
                     onAddTask={addTask}
+                    onToggle={toggleTask}
+                    onUpdate={updateTask}
+                    onDelete={deleteTask}
+                  />
+                )}
+                {currentView === 'kanban' && (
+                  <KanbanView
+                    tasks={tasks}
                     onToggle={toggleTask}
                     onUpdate={updateTask}
                     onDelete={deleteTask}
