@@ -51,7 +51,7 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
     return filtered;
   }, [tasks, selectedMonth, filterPriority, filterCompletion, selectedTag]);
 
-  const { grade, color } = getCompletionGrade(report.stats.completionPercentage);
+  const { grade } = getCompletionGrade(report.stats.completionPercentage);
 
   // Calculate current streak
   const currentStreak = useMemo(() => {
@@ -77,14 +77,17 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
 
   if (report.stats.total === 0) {
     return (
-      <div className="space-y-6">
-        {/* Month Selector */}
-        <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200">
-          <label className="block text-sm font-bold text-gray-600 uppercase tracking-wider mb-3">Select Month</label>
+      <div className="space-y-5">
+        {/* Header with month selector */}
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Monthly Stats</h2>
+            <p className="text-sm text-gray-400 dark:text-gray-500">Your productivity overview</p>
+          </div>
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
-            className="w-full sm:w-64 px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 text-gray-800 bg-gray-50 transition-colors"
+            className="px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
             {months.map(({ value, label }) => (
               <option key={value} value={value}>{label}</option>
@@ -93,26 +96,29 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
         </div>
 
         {/* Empty State */}
-        <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-indigo-300">
-          <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <BarChart3 className="w-8 h-8 text-indigo-600" />
+        <div className="flex flex-col items-center py-16 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+          <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center mb-4">
+            <BarChart3 className="w-8 h-8 text-indigo-400" />
           </div>
-          <p className="text-gray-800 font-medium mb-1">No tasks for this month</p>
-          <p className="text-gray-600 text-sm">Try selecting a different month</p>
+          <p className="font-semibold text-gray-700 dark:text-gray-300 mb-1">No tasks for this month</p>
+          <p className="text-sm text-gray-400">Try selecting a different month</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Month Selector */}
-      <div className="bg-white p-5 rounded-2xl shadow-lg border border-gray-200">
-        <label className="block text-sm font-bold text-gray-600 uppercase tracking-wider mb-3">Select Month</label>
+    <div className="space-y-5">
+      {/* Header with month selector */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Monthly Stats</h2>
+          <p className="text-sm text-gray-400 dark:text-gray-500">Your productivity overview</p>
+        </div>
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
-          className="w-full sm:w-64 px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 text-gray-800 bg-gray-50 transition-colors"
+          className="px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
         >
           {months.map(({ value, label }) => (
             <option key={value} value={value}>{label}</option>
@@ -120,36 +126,32 @@ export function MonthlyReport({ tasks }: MonthlyReportProps) {
         </select>
       </div>
 
-      {/* Summary Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
-          <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mb-3">
-            <ClipboardList className="w-5 h-5 text-indigo-600" />
-          </div>
-          <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Total Tasks</p>
-          <p className="text-3xl font-bold text-gray-900 mt-1">{report.stats.total}</p>
+      {/* Gradient summary cards */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-900/40">
+          <div className="absolute -right-3 -top-3 w-16 h-16 bg-white/10 rounded-full" />
+          <div className="absolute -right-1 top-6 w-8 h-8 bg-white/10 rounded-full" />
+          <ClipboardList className="w-6 h-6 mb-3 opacity-80" aria-hidden="true" />
+          <p className="text-3xl font-black">{report.stats.total}</p>
+          <p className="text-xs font-semibold text-indigo-100 mt-0.5 uppercase tracking-wider">Total Tasks</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
-          <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mb-3">
-            <CheckCircle className="w-5 h-5 text-emerald-600" />
-          </div>
-          <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Completed</p>
-          <p className="text-3xl font-bold text-emerald-600 mt-1">{report.stats.completed}</p>
+        <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-200 dark:shadow-emerald-900/40">
+          <div className="absolute -right-3 -top-3 w-16 h-16 bg-white/10 rounded-full" />
+          <CheckCircle className="w-6 h-6 mb-3 opacity-80" aria-hidden="true" />
+          <p className="text-3xl font-black">{report.stats.completed}</p>
+          <p className="text-xs font-semibold text-emerald-100 mt-0.5 uppercase tracking-wider">Completed</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
-          <div className="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center mb-3">
-            <Clock className="w-5 h-5 text-rose-600" />
-          </div>
-          <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Incomplete</p>
-          <p className="text-3xl font-bold text-rose-600 mt-1">{report.stats.incomplete}</p>
+        <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-lg shadow-rose-200 dark:shadow-rose-900/40">
+          <div className="absolute -right-3 -top-3 w-16 h-16 bg-white/10 rounded-full" />
+          <Clock className="w-6 h-6 mb-3 opacity-80" aria-hidden="true" />
+          <p className="text-3xl font-black">{report.stats.incomplete}</p>
+          <p className="text-xs font-semibold text-rose-100 mt-0.5 uppercase tracking-wider">Incomplete</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-default">
-          <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
-            <TrendingUp className="w-5 h-5 text-purple-600" />
-          </div>
-          <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Rate</p>
-          <p className={`text-3xl font-bold mt-1 ${color}`}>{report.stats.completionPercentage}%</p>
-          <p className={`text-xs font-medium ${color}`}>{grade}</p>
+        <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-700 text-white shadow-lg shadow-purple-200 dark:shadow-purple-900/40">
+          <div className="absolute -right-3 -top-3 w-16 h-16 bg-white/10 rounded-full" />
+          <TrendingUp className="w-6 h-6 mb-3 opacity-80" aria-hidden="true" />
+          <p className="text-3xl font-black">{report.stats.completionPercentage}%</p>
+          <p className="text-xs font-semibold text-purple-100 mt-0.5 uppercase tracking-wider">Completion · {grade}</p>
         </div>
       </div>
 
